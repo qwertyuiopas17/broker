@@ -302,8 +302,15 @@
             <video id="localVideo" autoplay playsinline muted style="width: 150px; position: absolute; bottom: 1rem; right: 1rem; border: 2px solid white; border-radius: 8px;"></video>
         </div>
         <div class="modal-actions" style="justify-content: center;">
+             <button class="btn btn-primary" id="startCallBtn">Start Call</button>
              <button class="btn btn-neutral" data-screen="prescriptionWriterScreen" data-key="write_prescription">Write Prescription</button>
-            <button class="btn btn-sos" data-key="end_call">End Call</button> </div>
+        <button class="btn btn-sos" id="endCallBtn" data-key="end_call">End Call</button> </div>
+        <div id="connectionStatus" style="text-align: center; margin-top: 1rem; padding: 0.5rem; border-radius: 8px; background: rgba(0,0,0,0.1); display: none;">
+            <span id="statusText">Connecting...</span>
+        </div>
+        <div id="videoStatus" style="text-align: center; margin-top: 0.5rem; padding: 0.25rem; font-size: 0.8rem; color: var(--text-color-secondary); display: none;">
+            <span id="videoStatusText">Video status will appear here</span>
+        </div>
     </div>
 </section>
 
@@ -413,13 +420,22 @@
             let currentAppointmentId = null;
             let iceCandidateQueue = [];
             let isCallActive = false;
+            let isInitiator = false; // Role assignment for collision resolution
+            let retryCount = 0;
+            let maxRetries = 3;
+            let retryDelay = 1000; // Start with 1 second
 
             // Enhanced WebRTC configuration with multiple STUN/TURN servers
             const configuration = {
                 iceServers: [
+                    // STUN servers for NAT traversal
                     { urls: 'stun:stun.l.google.com:19302' },
                     { urls: 'stun:stun1.l.google.com:19302' },
                     { urls: 'stun:stun2.l.google.com:19302' },
+                    { urls: 'stun:stun3.l.google.com:19302' },
+                    { urls: 'stun:stun4.l.google.com:19302' },
+
+                    // TURN servers for fallback when STUN fails
                     {
                         urls: 'turn:openrelay.metered.ca:80',
                         username: 'openrelayproject',
@@ -429,15 +445,26 @@
                         urls: 'turn:openrelay.metered.ca:443',
                         username: 'openrelayproject',
                         credential: 'openrelayproject'
+                    },
+                    {
+                        urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+                        username: 'openrelayproject',
+                        credential: 'openrelayproject'
                     }
                 ],
-                iceCandidatePoolSize: 10
+                iceCandidatePoolSize: 10,
+                bundlePolicy: 'max-bundle',
+                rtcpMuxPolicy: 'require'
             };
 
             function showCallScreen(patientName, appointmentId) {
                 currentAppointmentId = appointmentId;
                 document.getElementById('consultationHeader').textContent = `Consultation with ${patientName}`;
                 showScreen('consultationScreen');
+
+                // Hide any existing connection status when showing call screen
+                hideConnectionStatus();
+
                 initializeWebRTC();
             }
 
@@ -449,6 +476,9 @@
                     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                         throw new Error('WebRTC is not supported in this browser');
                     }
+
+                    // Show loading state
+                    showConnectionStatus('Requesting camera and microphone permissions...', 'info');
 
                     // Request camera and microphone permissions with better constraints
                     const constraints = {
@@ -479,9 +509,15 @@
                         }
                     }
 
+                    // Wait a bit before creating peer connection to avoid race conditions
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
                     createPeerConnection();
                     isCallActive = true;
                     console.log('Doctor: WebRTC initialized successfully');
+
+                    // Update status
+                    showConnectionStatus('WebRTC ready. Click "Start Call" to begin.', 'success');
 
                 } catch (error) {
                     console.error('Doctor: Error accessing media devices:', error);
@@ -500,7 +536,8 @@
                         errorMessage += 'Please check your camera and microphone permissions.';
                     }
 
-                    alert(errorMessage);
+                    showConnectionStatus(errorMessage, 'error');
+                    throw error; // Re-throw to be handled by caller
                 }
             }
 
@@ -519,50 +556,136 @@
 
                     // Handle remote stream from patient
                     peerConnection.ontrack = event => {
-                        console.log('Doctor: Received remote stream from patient');
+                        console.log('Doctor: Received remote stream from patient', event.streams[0]);
+                        console.log('Doctor: Stream tracks:', event.streams[0].getTracks());
+
                         const remoteVideo = document.getElementById('remoteVideo');
-                        if (remoteVideo) {
+                        if (remoteVideo && event.streams[0]) {
                             // Check if srcObject is already set to avoid unnecessary changes
                             if (remoteVideo.srcObject !== event.streams[0]) {
+                                console.log('Doctor: Attaching remote stream to video element');
                                 remoteVideo.srcObject = event.streams[0];
                             }
 
-                            // More robust play method to handle race conditions
-                            const playVideo = async (videoElement) => {
+                            // More robust play method to handle race conditions and autoplay policies
+                            const playVideo = async (videoElement, retryCount = 0) => {
                                 try {
-                                    // Wait a bit for the srcObject to be fully loaded
-                                    await new Promise(resolve => setTimeout(resolve, 100));
-                                    if (videoElement && !videoElement.paused && !videoElement.ended) {
-                                        console.log('Doctor: Video is already playing');
+                                    console.log('Doctor: Attempting to play remote video, attempt:', retryCount + 1);
+
+                                    // Wait for the srcObject to be fully loaded
+                                    await new Promise(resolve => setTimeout(resolve, 200));
+
+                                    if (!videoElement) {
+                                        console.error('Doctor: Video element not found');
                                         return;
                                     }
+
+                                    // Check if video is already playing
+                                    if (!videoElement.paused && !videoElement.ended) {
+                                        console.log('Doctor: Remote video is already playing');
+                                        showConnectionStatus('Remote video connected and playing!', 'success');
+                                        return;
+                                    }
+
+                                    // Try to play the video
                                     await videoElement.play();
                                     console.log('Doctor: Remote video playing successfully');
+
+                                    // Update UI to show video is connected
+                                    showConnectionStatus('Remote video connected and playing!', 'success');
+
+                                    // Update button text
+                                    const startCallBtn = document.getElementById('startCallBtn');
+                                    if (startCallBtn) {
+                                        startCallBtn.textContent = 'Call Active';
+                                    }
+
                                 } catch (e) {
-                                    if (e.name === 'AbortError') {
+                                    console.warn('Doctor: Remote video play failed:', e);
+
+                                    if (e.name === 'NotAllowedError') {
+                                        console.error('Doctor: Video autoplay blocked by browser policy');
+                                        showConnectionStatus('Video autoplay blocked. Click to enable video.', 'warning');
+
+                                        // Add click handler to enable video
+                                        videoElement.addEventListener('click', () => {
+                                            videoElement.play().then(() => {
+                                                console.log('Doctor: Video enabled by user click');
+                                                showConnectionStatus('Video enabled successfully!', 'success');
+                                            }).catch(err => console.error('Doctor: Failed to enable video:', err));
+                                        }, { once: true });
+
+                                    } else if (e.name === 'AbortError' && retryCount < 3) {
                                         console.log('Doctor: Video play aborted, retrying...');
-                                        // Retry after a short delay
-                                        setTimeout(() => playVideo(videoElement), 500);
+                                        setTimeout(() => playVideo(videoElement, retryCount + 1), 500);
                                     } else {
-                                        console.warn('Doctor: Remote video play failed:', e);
+                                        console.error('Doctor: Remote video play failed permanently:', e);
+                                        showConnectionStatus('Video connection issue: ' + e.message, 'error');
                                     }
                                 }
                             };
 
                             playVideo(remoteVideo);
+                        } else {
+                            console.error('Doctor: Remote video element or stream not found');
                         }
                     };
 
                     // Handle connection state changes
                     peerConnection.onconnectionstatechange = () => {
-                        console.log('Doctor: Connection state:', peerConnection.connectionState);
+                        console.log('Doctor: Connection state changed to:', peerConnection.connectionState);
+                        console.log('Doctor: Signaling state:', peerConnection.signalingState);
+
                         if (peerConnection.connectionState === 'connected') {
                             console.log('Doctor: Connected to patient successfully');
+                            showConnectionStatus('Connected successfully!', 'success');
+                            // Update UI to show connected state
+                            const endCallBtn = document.querySelector('#consultationScreen .btn-sos');
+                            if (endCallBtn) endCallBtn.textContent = 'End Call';
                         } else if (peerConnection.connectionState === 'failed') {
                             console.error('Doctor: Connection failed');
-                            alert('Video call connection failed. Please try again.');
+                            showConnectionStatus('Connection failed. Please try again.', 'error');
+                            handleConnectionFailure();
+                        } else if (peerConnection.connectionState === 'connecting') {
+                            console.log('Doctor: Attempting to connect...');
+                            showConnectionStatus('Connecting to patient...', 'info');
+                        } else if (peerConnection.connectionState === 'new') {
+                            console.log('Doctor: New connection state');
+                            hideConnectionStatus();
+                        } else if (peerConnection.connectionState === 'disconnected') {
+                            console.log('Doctor: Disconnected from patient');
+                            showConnectionStatus('Reconnecting...', 'warning');
+                            handlePeerDisconnection();
+                        } else if (peerConnection.connectionState === 'closed') {
+                            console.log('Doctor: Connection closed');
+                            hideConnectionStatus();
                         }
                     };
+
+                    // Handle signaling state changes for debugging
+                    peerConnection.onsignalingstatechange = () => {
+                        console.log('Doctor: Signaling state changed to:', peerConnection.signalingState);
+                    };
+
+                    // Enhanced track event debugging
+                    peerConnection.onaddstream = event => {
+                        console.log('Doctor: Stream added:', event.stream);
+                        console.log('Doctor: Stream tracks:', event.stream.getTracks());
+                    };
+
+                    // Monitor track events for debugging
+                    localStream.getTracks().forEach(track => {
+                        track.onended = () => {
+                            console.warn('Doctor: Local track ended:', track.kind);
+                            showConnectionStatus(`Local ${track.kind} track ended`, 'warning');
+                        };
+                        track.onmute = () => {
+                            console.warn('Doctor: Local track muted:', track.kind);
+                        };
+                        track.onunmute = () => {
+                            console.log('Doctor: Local track unmuted:', track.kind);
+                        };
+                    });
 
                     // Handle ICE candidates
                     peerConnection.onicecandidate = event => {
@@ -594,48 +717,421 @@
             }
             async function handleSignalingMessage(type, data) {
                 try {
-                    if (type === 'offer') {
-                        if (peerConnection.signalingState === 'stable') {
-                            await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
-                            // --- FIX: Process any queued candidates after setting the description ---
-                            iceCandidateQueue.forEach(candidate => peerConnection.addIceCandidate(candidate));
-                            iceCandidateQueue = []; // Clear the queue
+                    console.log(`Doctor: Handling ${type} signaling message`);
+                    console.log(`Doctor: Current signaling state: ${peerConnection?.signalingState}`);
+                    console.log(`Doctor: Current connection state: ${peerConnection?.connectionState}`);
 
-                            const answer = await peerConnection.createAnswer();
-                            await peerConnection.setLocalDescription(answer);
-                            sendSignalingMessage('answer', answer);
+                    if (!peerConnection) {
+                        console.warn('Doctor: Peer connection not initialized');
+                        return;
+                    }
+
+                    if (type === 'offer') {
+                        console.log('Doctor: Received offer from patient');
+
+                        // Check if we're already handling an offer or in a call
+                        if (peerConnection.signalingState === 'have-remote-offer') {
+                            console.log('Doctor: Already have a remote offer, ignoring duplicate');
+                            return;
+                        }
+
+                        if (peerConnection.signalingState === 'have-local-offer') {
+                            console.log('Doctor: Collision detected - both peers trying to call');
+                            console.log('Doctor: Doctor sent offer, patient also sent offer');
+
+                            // Implement proper collision resolution
+                            // Since both sent offers, we need to decide who becomes the caller
+                            // Use a simple deterministic approach based on appointment ID
+                            const shouldBeCaller = currentAppointmentId.localeCompare('demo') > 0;
+
+                            if (shouldBeCaller) {
+                                console.log('Doctor: Doctor becomes caller due to appointment ID priority');
+                                // Doctor becomes caller - ignore patient's offer and continue with doctor's offer
+                                return;
+                            } else {
+                                console.log('Doctor: Patient becomes caller, doctor becomes callee');
+                                // Doctor becomes callee - reset and accept patient's offer
+                                resetConnection();
+                            }
+                        }
+
+                        console.log('Doctor: Setting remote description with patient\'s offer...');
+                        await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
+
+                        console.log('Doctor: Creating answer...');
+                        const answer = await peerConnection.createAnswer();
+
+                        console.log('Doctor: Setting local description with answer...');
+                        await peerConnection.setLocalDescription(answer);
+
+                        console.log('Doctor: Sending answer via signaling...');
+                        sendSignalingMessage('answer', answer);
+
+                        console.log('Doctor: Successfully answered patient\'s call');
+                        return;
+                    } else if (type === 'answer') {
+                        console.log('Doctor: Received answer, setting remote description...');
+                        if (peerConnection.signalingState === 'have-local-offer') {
+                            await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
+                            console.log('Doctor: Remote description set successfully');
+
+                            // Process any queued candidates after setting the description
+                            if (iceCandidateQueue.length > 0) {
+                                console.log(`Doctor: Processing ${iceCandidateQueue.length} queued ICE candidates`);
+                                for (const candidate of iceCandidateQueue) {
+                                    try {
+                                        await peerConnection.addIceCandidate(candidate);
+                                        console.log('Doctor: Queued ICE candidate added successfully');
+                                    } catch (error) {
+                                        console.warn('Doctor: Failed to add queued candidate:', error);
+                                    }
+                                }
+                                iceCandidateQueue = [];
+                            }
+                        } else {
+                            console.warn('Doctor: Cannot handle answer - wrong signaling state:', peerConnection.signalingState);
+                            console.warn('Doctor: Expected "have-local-offer" but got:', peerConnection.signalingState);
+
+                            // If we're in stable state but expecting an answer, this indicates a collision
+                            if (peerConnection.signalingState === 'stable') {
+                                console.log('Doctor: Detected collision - both peers trying to call. Doctor will wait...');
+                                // Wait for the patient's offer to arrive and be processed
+                                setTimeout(() => {
+                                    if (peerConnection && peerConnection.signalingState === 'stable') {
+                                        console.log('Doctor: No patient offer received, retrying as caller...');
+                                        startCall();
+                                    }
+                                }, 2000);
+                            }
                         }
                     } else if (type === 'ice') {
+                        console.log('Doctor: Received ICE candidate');
                         const candidate = new RTCIceCandidate(data);
-                        // --- FIX: Check if remoteDescription is set. If not, queue the candidate. ---
+
                         if (peerConnection.remoteDescription) {
-                            await peerConnection.addIceCandidate(candidate);
+                            try {
+                                await peerConnection.addIceCandidate(candidate);
+                                console.log('Doctor: ICE candidate added successfully');
+                            } catch (error) {
+                                console.warn('Doctor: Failed to add ICE candidate:', error);
+                            }
                         } else {
+                            console.log('Doctor: Queueing ICE candidate (no remote description yet)');
                             iceCandidateQueue.push(candidate);
                         }
                     }
-                }catch (error) {
-                    console.error('Error handling signaling message:', error);
+                } catch (error) {
+                    console.error('Doctor: Error handling signaling message:', error);
+                    console.error('Doctor: Signaling state:', peerConnection?.signalingState);
+                    console.error('Doctor: Connection state:', peerConnection?.connectionState);
+                    console.error('Doctor: Error details:', error.message);
                 }
             }
 
             function sendSignalingMessage(type, data) {
+                console.log(`Doctor: Sending ${type} via signaling`);
                 fetch(`${API_BASE_URL}/webrtc/${type}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ appointmentId: currentAppointmentId, data: data })
-                }).catch(error => console.error('Signaling error:', error));
+                }).catch(error => {
+                    console.error('Doctor: Signaling error:', error);
+                    // Retry signaling after a short delay
+                    setTimeout(() => {
+                        console.log(`Doctor: Retrying ${type} signaling`);
+                        sendSignalingMessage(type, data);
+                    }, 2000);
+                });
             }
 
+            async function sendSignalingMessageWithRetry(type, data) {
+                return new Promise((resolve, reject) => {
+                    const attemptSend = (attemptNumber) => {
+                        console.log(`Doctor: Sending ${type} via signaling (attempt ${attemptNumber})`);
+
+                        fetch(`${API_BASE_URL}/webrtc/${type}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ appointmentId: currentAppointmentId, data: data })
+                        }).then(() => {
+                            console.log(`Doctor: ${type} sent successfully`);
+                            resolve();
+                        }).catch(error => {
+                            console.error(`Doctor: Signaling error on attempt ${attemptNumber}:`, error);
+
+                            if (attemptNumber < maxRetries) {
+                                const delay = retryDelay * Math.pow(2, attemptNumber - 1);
+                                console.log(`Doctor: Retrying ${type} in ${delay}ms...`);
+                                setTimeout(() => attemptSend(attemptNumber + 1), delay);
+                            } else {
+                                console.error(`Doctor: Max retries reached for ${type}`);
+                                reject(error);
+                            }
+                        });
+                    };
+
+                    attemptSend(1);
+                });
+            }
+
+            async function startCall() {
+                try {
+                    if (!peerConnection) {
+                        throw new Error('Peer connection not initialized');
+                    }
+
+                    if (!localStream) {
+                        throw new Error('Local stream not available');
+                    }
+
+                    console.log('Doctor: Starting call, current signaling state:', peerConnection.signalingState);
+
+                    // Check if we're already in a call or have an offer pending
+                    if (peerConnection.signalingState !== 'stable') {
+                        console.log('Doctor: Not in stable state, cannot create offer. Current state:', peerConnection.signalingState);
+
+                        // If we're in 'have-remote-offer' state, it means patient initiated the call
+                        if (peerConnection.signalingState === 'have-remote-offer') {
+                            console.log('Doctor: Patient initiated the call, creating answer instead...');
+                            return await answerCall();
+                        }
+
+                        console.log('Doctor: Waiting for stable state before creating offer...');
+                        return;
+                    }
+
+                    // Set initiator role
+                    isInitiator = true;
+
+                    console.log('Doctor: Creating offer...');
+                    const offer = await peerConnection.createOffer({
+                        offerToReceiveAudio: true,
+                        offerToReceiveVideo: true
+                    });
+
+                    console.log('Doctor: Setting local description...');
+                    await peerConnection.setLocalDescription(offer);
+
+                    console.log('Doctor: Sending offer via signaling...');
+                    await sendSignalingMessageWithRetry('offer', offer);
+
+                    // Update UI
+                    const startCallBtn = document.getElementById('startCallBtn');
+                    if (startCallBtn) {
+                        startCallBtn.disabled = true;
+                        startCallBtn.textContent = 'Connecting...';
+                    }
+
+                    console.log('Doctor: Call started successfully');
+                } catch (error) {
+                    console.error('Doctor: Error starting call:', error);
+                    console.error('Doctor: Signaling state:', peerConnection.signalingState);
+                    console.error('Doctor: Connection state:', peerConnection.connectionState);
+
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`Doctor: Retrying call start (${retryCount}/${maxRetries}) in ${retryDelay}ms...`);
+                        setTimeout(() => startCall(), retryDelay);
+                        retryDelay *= 2; // Exponential backoff
+                    } else {
+                        console.error('Doctor: Max retries reached, giving up');
+                        alert('Failed to start call after multiple attempts. Please refresh and try again.');
+                        retryCount = 0;
+                        retryDelay = 1000;
+                    }
+                }
+            }
+
+            async function answerCall() {
+                try {
+                    if (!peerConnection) {
+                        throw new Error('Peer connection not initialized');
+                    }
+
+                    console.log('Doctor: Answering call, creating answer...');
+
+                    const answer = await peerConnection.createAnswer({
+                        offerToReceiveAudio: true,
+                        offerToReceiveVideo: true
+                    });
+
+                    console.log('Doctor: Setting local description with answer...');
+                    await peerConnection.setLocalDescription(answer);
+
+                    console.log('Doctor: Sending answer via signaling...');
+                    sendSignalingMessage('answer', answer);
+
+                    console.log('Doctor: Answer sent successfully');
+                } catch (error) {
+                    console.error('Doctor: Error answering call:', error);
+                    alert('Failed to answer call: ' + error.message);
+                }
+            }
+
+            function handleConnectionFailure() {
+                console.error('Doctor: Connection failure detected');
+
+                // Get detailed error information
+                let errorDetails = 'Unknown error occurred';
+                if (peerConnection) {
+                    errorDetails = `Connection State: ${peerConnection.connectionState}, Signaling State: ${peerConnection.signalingState}, ICE State: ${peerConnection.iceConnectionState}`;
+                    console.error('Doctor: Detailed connection info:', {
+                        connectionState: peerConnection.connectionState,
+                        signalingState: peerConnection.signalingState,
+                        iceConnectionState: peerConnection.iceConnectionState,
+                        iceGatheringState: peerConnection.iceGatheringState
+                    });
+                }
+
+                // Show detailed error message
+                const errorMessage = `Video call connection failed.
+Details: ${errorDetails}
+
+Possible solutions:
+• Check your internet connection
+• Allow camera and microphone permissions
+• Try refreshing the page
+• Contact support if the issue persists`;
+
+                showConfirmationModal('Connection Failed', errorMessage);
+
+                // Reset call state
+                endCall();
+            }
+
+            function resetConnection() {
+                console.log('Doctor: Resetting connection due to collision...');
+
+                // Close existing connection
+                if (peerConnection) {
+                    peerConnection.close();
+                    peerConnection = null;
+                }
+
+                // Clear queues
+                iceCandidateQueue = [];
+
+                // Reset retry state
+                retryCount = 0;
+                retryDelay = 1000;
+
+                // Create new peer connection
+                createPeerConnection();
+
+                console.log('Doctor: Connection reset complete');
+            }
+
+            function handlePeerDisconnection() {
+                console.log('Doctor: Peer disconnected, attempting to reconnect...');
+
+                // Show reconnection status to user
+                const endCallBtn = document.querySelector('#consultationScreen .btn-sos');
+                if (endCallBtn) {
+                    endCallBtn.textContent = 'Reconnecting...';
+                    endCallBtn.disabled = true;
+                }
+
+                // Attempt to reconnect after a short delay
+                setTimeout(() => {
+                    if (isCallActive && peerConnection) {
+                        console.log('Doctor: Attempting to reconnect...');
+                        startCall();
+                    }
+                }, 2000);
+            }
 
             function pollSignaling() {
-                if (currentAppointmentId) { // Only poll if in an active call
-                    fetch(`${API_BASE_URL}/webrtc/poll?appointmentId=${currentAppointmentId}`)
-                        .then(response => response.json())
-                        .then(messages => {
-                            messages.forEach(msg => handleSignalingMessage(msg.type, msg.data));
-                        })
-                        .catch(error => console.error('Polling error:', error));
+                if (!currentAppointmentId) return;
+
+                fetch(`${API_BASE_URL}/webrtc/poll?appointmentId=${currentAppointmentId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        return response.json();
+                    })
+                    .then(messages => {
+                        if (messages && messages.length > 0) {
+                            console.log(`Doctor: Received ${messages.length} signaling messages`);
+                            messages.forEach((msg, index) => {
+                                console.log(`Doctor: Processing message ${index + 1}:`, msg);
+                                handleSignalingMessage(msg.type, msg.data);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Doctor: Polling error:', error);
+                        // Don't show error to user for polling failures, just log them
+                    });
+            }
+
+            function showConnectionStatus(message, type = 'info') {
+                const statusDiv = document.getElementById('connectionStatus');
+                const statusText = document.getElementById('statusText');
+
+                if (statusDiv && statusText) {
+                    statusText.textContent = message;
+
+                    // Set color based on type
+                    switch (type) {
+                        case 'success':
+                            statusDiv.style.background = 'rgba(34, 197, 94, 0.2)';
+                            statusDiv.style.color = '#16a34a';
+                            break;
+                        case 'error':
+                            statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                            statusDiv.style.color = '#ef4444';
+                            break;
+                        case 'warning':
+                            statusDiv.style.background = 'rgba(245, 158, 11, 0.2)';
+                            statusDiv.style.color = '#f59e0b';
+                            break;
+                        default:
+                            statusDiv.style.background = 'rgba(0, 0, 0, 0.1)';
+                            statusDiv.style.color = 'inherit';
+                    }
+
+                    statusDiv.style.display = 'block';
+                }
+            }
+
+            function hideConnectionStatus() {
+                const statusDiv = document.getElementById('connectionStatus');
+                if (statusDiv) {
+                    statusDiv.style.display = 'none';
+                }
+            }
+
+            function showVideoStatus(message, type = 'info') {
+                const statusDiv = document.getElementById('videoStatus');
+                const statusText = document.getElementById('videoStatusText');
+
+                if (statusDiv && statusText) {
+                    statusText.textContent = message;
+
+                    // Set color based on type
+                    switch (type) {
+                        case 'success':
+                            statusDiv.style.color = '#16a34a';
+                            break;
+                        case 'error':
+                            statusDiv.style.color = '#ef4444';
+                            break;
+                        case 'warning':
+                            statusDiv.style.color = '#f59e0b';
+                            break;
+                        default:
+                            statusDiv.style.color = 'inherit';
+                    }
+
+                    statusDiv.style.display = 'block';
+                }
+            }
+
+            function hideVideoStatus() {
+                const statusDiv = document.getElementById('videoStatus');
+                if (statusDiv) {
+                    statusDiv.style.display = 'none';
                 }
             }
             
@@ -668,6 +1164,19 @@
                     currentAppointmentId = null;
                     isCallActive = false;
                     iceCandidateQueue = [];
+                    isInitiator = false;
+                    retryCount = 0;
+                    retryDelay = 1000;
+
+                    // Reset UI
+                    const startCallBtn = document.getElementById('startCallBtn');
+                    if (startCallBtn) {
+                        startCallBtn.disabled = false;
+                        startCallBtn.textContent = 'Start Call';
+                    }
+
+                    // Hide connection status when call ends
+                    hideConnectionStatus();
 
                     // Go back to dashboard
                     showScreen('dashboardScreen');
@@ -678,8 +1187,44 @@
                 }
             }
 
+            // Test function for debugging WebRTC issues
+            function testWebRTCConnection() {
+                console.log('Doctor: Testing WebRTC connection...');
+
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    console.error('Doctor: WebRTC not supported');
+                    showConnectionStatus('WebRTC not supported in this browser', 'error');
+                    return false;
+                }
+
+                // Test media device access
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                    .then(stream => {
+                        console.log('Doctor: Media device test successful');
+                        stream.getTracks().forEach(track => track.stop()); // Stop test stream
+                        showConnectionStatus('WebRTC test successful - ready for calls', 'success');
+                        return true;
+                    })
+                    .catch(error => {
+                        console.error('Doctor: Media device test failed:', error);
+                        showConnectionStatus('Media device test failed: ' + error.message, 'error');
+                        return false;
+                    });
+
+                return true;
+            }
+
             // Start polling for signaling messages periodically
             setInterval(pollSignaling, 1000);
+
+            // Add test button event listener for debugging
+            document.addEventListener('keydown', function(e) {
+                // Press Ctrl+Shift+T to test WebRTC
+                if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+                    testWebRTCConnection();
+                }
+            });
+
             // --- END OF WEBRTC SECTION --->>>
 
             const translations = {
@@ -1023,7 +1568,10 @@ async function generateAppointments() {
                     showScreen('dashboardScreen');
                 });
                 // --- ADD THIS EVENT LISTENER FOR THE END CALL BUTTON ---
-                document.querySelector('#consultationScreen .btn-sos').addEventListener('click', endCall);
+                document.getElementById('endCallBtn').addEventListener('click', endCall);
+
+                // --- ADD WebRTC EVENT LISTENERS ---
+                document.getElementById('startCallBtn').addEventListener('click', startCall);
             }
 
             function showConfirmationModal(title, message) {

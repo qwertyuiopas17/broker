@@ -255,46 +255,8 @@
         .call-content h1 { margin-bottom: 1rem; font-size: 2rem; }
         .video-container { display: flex; gap: 1rem; margin-bottom: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
         .video-wrapper { position: relative; }
-        .video-element {
-            width: 300px;
-            height: 225px;
-            background-color: #0f172a;
-            border-radius: var(--radius-lg);
-            object-fit: cover;
-            border: 2px solid #333;
-            display: block;
-            visibility: visible;
-        }
-        .local-video {
-            width: 150px;
-            height: 112px;
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            border: 2px solid white;
-            border-radius: 8px;
-            object-fit: cover;
-            display: block;
-            visibility: visible;
-            z-index: 10;
-        }
-        .remote-video {
-            transform: none; /* Don't mirror remote video */
-        }
-
-        /* Video debugging styles */
-        .video-element[srcObject] {
-            background-color: #1a1a1a;
-        }
-        .video-element:not([srcObject]) {
-            background-image: repeating-linear-gradient(
-                45deg,
-                #333 0px,
-                #333 10px,
-                #555 10px,
-                #555 20px
-            );
-        }
+        .video-element { width: 300px; height: 225px; background-color: #0f172a; border-radius: var(--radius-lg); object-fit: cover; }
+        .local-video { width: 150px; height: 112px; position: absolute; bottom: 10px; right: 10px; border: 2px solid white; }
         .call-actions { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1rem; }
         .message-section { background: rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 1rem; width: 100%; max-width: 600px; }
         .messages { height: 150px; overflow-y: auto; margin-bottom: 0.5rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.5rem; }
@@ -303,51 +265,6 @@
         .message.doctor { background: rgba(0,0,0,0.2); text-align: left; }
         .message-input { display: flex; gap: 0.5rem; }
         #messageInput { flex-grow: 1; padding: 0.5rem; border-radius: 8px; border: none; }
-
-        .connection-status-container {
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .connection-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        .connection-status.disconnected {
-            background-color: #64748b;
-            color: white;
-        }
-        .connection-status.connecting {
-            background-color: #f59e0b;
-            color: white;
-        }
-        .connection-status.connected {
-            background-color: #10b981;
-            color: white;
-        }
-        .connection-status.failed {
-            background-color: #ef4444;
-            color: white;
-        }
-
-        .video-status {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            z-index: 20;
-        }
-        .video-status.stream-active {
-            background: rgba(0, 255, 0, 0.7);
-        }
-        .video-status.stream-loading {
-            background: rgba(255, 165, 0, 0.7);
-        }
 
         /* Responsive */
         @media (min-width: 768px) {
@@ -368,10 +285,119 @@
         @media (max-width: 767px) {
             .header { position: static; transform: none; width: 100%; border-radius: 0; padding: 1rem; }
             .page-content { padding-top: 1rem; }
-            
+
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Enhanced Chatbot Features */
+        .interactive-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .interactive-buttons-container button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .interactive-buttons-container button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .interactive-buttons-container .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .interactive-buttons-container .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .interactive-buttons-container .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Medicine Reminder Styles */
+        .medicine-reminder-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .reminder-item {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminder-info h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .reminder-info p {
+            margin: 0.25rem 0 0 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .reminder-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-taken {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-skip {
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .sos-alert {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
         }
     </style>
 </head>
@@ -429,6 +455,23 @@
                               <p class="highlight">3 Total</p>
                               <p data-key="from_last_visit">From past visits</p>
                           </div>
+                          <div id="medicineReminders" class="info-card card" style="cursor: pointer;">
+                              <h3 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                      <div class="icon" style="background-image: linear-gradient(45deg, #ff6b6b, #ee5a52); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                          </svg>
+                                      </div>
+                                      <span>Medicine Reminders</span>
+                                  </div>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M9 18l6-6-6-6"></path>
+                                  </svg>
+                              </h3>
+                              <p class="highlight" id="pendingReminders">2 Pending</p>
+                              <p>Don't forget your medicines</p>
+                          </div>
                         <div data-screen="scanMedicineScreen" class="tool-card card">
                             <div class="icon" style="background-image: linear-gradient(45deg, #3b82f6, #60a5fa);">
                                 <!-- --- MODIFIED: Corrected viewBox --- -->
@@ -460,6 +503,15 @@
                      <div class="page-header"><h1 data-key="prescriptions_title">My Prescriptions</h1></div>
                      <button class="btn btn-primary" id="uploadPrescriptionBtn" style="margin-bottom: 1rem;">Upload Offline Prescription</button>
                      <div id="prescriptions-container"></div>
+                 </section>
+                 <section id="medicineRemindersScreen" class="screen">
+                     <div class="page-header">
+                         <h1>💊 Medicine Reminders</h1>
+                         <button class="btn btn-primary" id="addReminderBtn" style="margin-top: 1rem;">Add New Reminder</button>
+                     </div>
+                     <div id="remindersContainer">
+                         <!-- Medicine reminders will be loaded here -->
+                     </div>
                  </section>
                 <section id="healthRecordScreen" class="screen">
                     <div class="page-header"><h1 data-key="records_title">Digital Health Record</h1></div><div id="timeline-container"></div>
@@ -592,10 +644,8 @@
             <h1 id="callWithDoctor"></h1>
             <div class="video-container">
                 <div class="video-wrapper">
-                    <video id="remoteVideo" class="video-element remote-video" autoplay playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='225' viewBox='0 0 300 225'%3E%3Crect width='300' height='225' fill='%23000'/%3E%3Ctext x='150' y='112.5' text-anchor='middle' fill='%23fff' font-family='Arial' font-size='16'%3EWaiting for video...%3C/text%3E%3C/svg%3E"></video>
-                    <div id="remoteVideoStatus" class="video-status">No Stream</div>
-                    <video id="localVideo" class="video-element local-video" autoplay playsinline muted poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='112' viewBox='0 0 150 112'%3E%3Crect width='150' height='112' fill='%23000'/%3E%3Ctext x='75' y='56' text-anchor='middle' fill='%23fff' font-family='Arial' font-size='12'%3ELocal%3C/text%3E%3C/svg%3E"></video>
-                    <div id="localVideoStatus" class="video-status">No Stream</div>
+                    <video id="remoteVideo" class="video-element" autoplay playsinline></video>
+                    <video id="localVideo" class="video-element local-video" autoplay playsinline muted></video>
                 </div>
             </div>
             <div class="call-actions">
@@ -604,8 +654,11 @@
                 <button class="btn" id="muteVideoBtn">Mute Video</button>
                 <button class="btn btn-sos" id="endCallBtn">End Call</button>
             </div>
-            <div class="connection-status-container">
-                <span id="connectionStatus" class="connection-status disconnected">Disconnected</span>
+            <div id="connectionStatus" style="text-align: center; margin-top: 1rem; padding: 0.5rem; border-radius: 8px; background: rgba(0,0,0,0.1); display: none;">
+                <span id="statusText">Connecting...</span>
+            </div>
+            <div id="videoStatus" style="text-align: center; margin-top: 0.5rem; padding: 0.25rem; font-size: 0.8rem; color: var(--text-color-secondary); display: none;">
+                <span id="videoStatusText">Video status will appear here</span>
             </div>
             <div class="message-section">
                 <div id="messages" class="messages"></div>
@@ -637,6 +690,35 @@
                 <button id="capturePrescriptionBtn" class="btn" disabled>Save Prescription</button>
             </div>
             <button class="btn" id="closeUploadModal" style="margin-top: 1rem;">Close</button>
+        </div>
+    </div>
+    <div id="medicineReminderModal" class="modal">
+        <div class="modal-content">
+            <h3>Add Medicine Reminder</h3>
+            <div class="form-group">
+                <label for="medicineName">Medicine Name</label>
+                <input type="text" id="medicineName" class="form-control" placeholder="e.g., Paracetamol">
+            </div>
+            <div class="form-group">
+                <label for="medicineDosage">Dosage</label>
+                <input type="text" id="medicineDosage" class="form-control" placeholder="e.g., 500mg">
+            </div>
+            <div class="form-group">
+                <label for="medicineTimes">Times (comma separated)</label>
+                <input type="text" id="medicineTimes" class="form-control" placeholder="e.g., 08:00, 14:00, 20:00">
+            </div>
+            <div class="form-group">
+                <label for="medicineDuration">Duration (days)</label>
+                <input type="number" id="medicineDuration" class="form-control" value="30">
+            </div>
+            <div class="form-group">
+                <label for="medicineInstructions">Instructions</label>
+                <textarea id="medicineInstructions" class="form-control" rows="2" placeholder="e.g., Take after meals"></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button id="saveReminderBtn" class="btn btn-primary">Save Reminder</button>
+                <button class="btn" onclick="document.getElementById('medicineReminderModal').classList.remove('active')">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -909,14 +991,32 @@
                 document.getElementById('closePrescriptionModal').addEventListener('click', () => document.getElementById('prescriptionModal').classList.remove('active'), { once: true });
             }
              function showPrescriptionFromRecord(record) {
-                const modalContent = document.getElementById('prescriptionModalContent');
-                const imageHtml = record.imageUrl ? `<img src="${API_BASE_URL}${record.imageUrl}" style="max-width: 100%; margin-bottom: 1rem; border-radius: var(--radius-lg);" />` : '';
-
-                modalContent.innerHTML = `<h3>Prescription</h3><div class="prescription-header"><p><strong>Title:</strong> ${record.title}</p><p><strong>Date:</strong> ${new Date(record.date).toDateString()}</p><p><strong>Description:</strong> ${record.description}</p></div>${imageHtml}<p style="text-align: center; color: var(--text-color-secondary);">Prescription image uploaded. Details extracted by AI if available.</p><button class="btn btn-primary" id="closePrescriptionModal">Close</button>`;
-
-                document.getElementById('prescriptionModal').classList.add('active');
-                document.getElementById('closePrescriptionModal').addEventListener('click', () => document.getElementById('prescriptionModal').classList.remove('active'), { once: true });
-            }
+                 const modalContent = document.getElementById('prescriptionModalContent');
+                 const imageHtml = record.imageUrl ? `<img src="${API_BASE_URL}${record.imageUrl}" style="max-width: 100%; margin-bottom: 1rem; border-radius: var(--radius-lg);" />` : '';
+ 
+                 // Determine prescription source
+                 const isPatientUpload = record.title.includes('Offline') || record.description.includes('offline');
+                 const sourceBadge = isPatientUpload ?
+                     '<span style="background: #ffc107; color: #000; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Patient Upload</span>' :
+                     '<span style="background: #007bff; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">Doctor Prescription</span>';
+ 
+                 modalContent.innerHTML = `
+                     <h3>Prescription ${sourceBadge}</h3>
+                     <div class="prescription-header">
+                         <p><strong>Title:</strong> ${record.title}</p>
+                         <p><strong>Date:</strong> ${new Date(record.date).toDateString()}</p>
+                         <p><strong>Description:</strong> ${record.description}</p>
+                     </div>
+                     ${imageHtml}
+                     <p style="text-align: center; color: var(--text-color-secondary);">
+                         ${isPatientUpload ? 'Patient-uploaded prescription. AI-extracted details shown below if available.' : 'Doctor-provided prescription from consultation.'}
+                     </p>
+                     <button class="btn btn-primary" id="closePrescriptionModal">Close</button>
+                 `;
+ 
+                 document.getElementById('prescriptionModal').classList.add('active');
+                 document.getElementById('closePrescriptionModal').addEventListener('click', () => document.getElementById('prescriptionModal').classList.remove('active'), { once: true });
+             }
 
             function renderBookingStep(step) {
                  document.querySelectorAll('.booking-step').forEach(s => s.classList.remove('active'));
@@ -1110,6 +1210,10 @@
                 document.getElementById('uploadPrescriptionBtn').addEventListener('click', () => document.getElementById('uploadPrescriptionModal').classList.add('active'));
                 document.getElementById('closeUploadModal').addEventListener('click', () => { const modal = document.getElementById('uploadPrescriptionModal'); modal.classList.remove('active'); const feed = document.getElementById('uploadCameraFeed'); if (feed.srcObject) { feed.srcObject.getTracks().forEach(track => track.stop()); feed.srcObject = null; } openCameraBtn.disabled = false; captureBtn.disabled = true; cameraStatus.textContent = "Click 'Open Camera' to start scanning"; });
 
+                // Medicine reminder modal
+                document.getElementById('addReminderBtn').addEventListener('click', () => document.getElementById('medicineReminderModal').classList.add('active'));
+                document.getElementById('saveReminderBtn').addEventListener('click', saveMedicineReminder);
+
                 document.getElementById('confirmSos').addEventListener('click', () => { document.getElementById('sosModal').classList.remove('active'); showConfirmationModal('SOS Activated', 'Emergency services have been notified.'); });
                 document.getElementById('reportIssueForm')?.addEventListener('submit', (e) => { e.preventDefault(); showConfirmationModal('Report Submitted', 'Your report has been sent for review.'); e.target.reset(); setTimeout(() => showScreen('moreScreen'), 2000); });
                 document.getElementById('prevMonth').addEventListener('click', () => { currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; } generateCalendar(); });
@@ -1123,6 +1227,7 @@
                 });
                 document.getElementById('logoutBtn').addEventListener('click', () => { alert("You have been logged out."); window.location.reload(); });
                 document.getElementById('viewAllPrescriptions').addEventListener('click', () => showScreen('prescriptionsScreen'));
+                document.getElementById('medicineReminders').addEventListener('click', () => showScreen('medicineRemindersScreen'));
             }
 
             function setupScanMedicine() {
@@ -1353,13 +1458,308 @@
                 });
             }
 
+            // Enhanced Chatbot with Smart Button Management
+            class SmartSehatSaharaChatbot {
+                constructor() {
+                    this.chatWindow = document.getElementById('chatWindow');
+                    this.currentButtons = [];
+                    this.buttonHistory = new Set(); // Track shown buttons to avoid repeats
+                    this.userProgress = {};
+                }
+
+                async handleChatbotResponse(response) {
+                    // Display text response
+                    this.displayMessage(response.response, 'bot');
+
+                    // Handle interactive buttons (only show when relevant)
+                    if (response.interactive_buttons && response.interactive_buttons.length > 0) {
+                        // Check if we should show buttons based on context
+                        if (this.shouldShowButtons(response)) {
+                            this.showInteractiveButtons(response.interactive_buttons);
+                        }
+                    }
+
+                    // Handle different actions
+                    await this.handleAction(response.action, response.parameters);
+                }
+
+                shouldShowButtons(response) {
+                    // Only show buttons for specific actions that need user interaction
+                    const actionsNeedingButtons = [
+                        'SHOW_APP_FEATURES',
+                        'Maps_TO_APPOINTMENT_BOOKING',
+                        'CONTINUE_SYMPTOM_CHECK',
+                        'CONTINUE_FOLLOWUP'
+                    ];
+
+                    return actionsNeedingButtons.includes(response.action);
+                }
+
+                showInteractiveButtons(buttons) {
+                    // Clear existing buttons first
+                    this.clearButtons();
+
+                    // Filter out buttons we've already shown recently
+                    const newButtons = buttons.filter(button => !this.buttonHistory.has(button.type));
+
+                    if (newButtons.length === 0) return; // No new buttons to show
+
+                    const buttonsContainer = document.createElement('div');
+                    buttonsContainer.className = 'interactive-buttons-container';
+                    buttonsContainer.style.cssText = `
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                        margin-top: 10px;
+                        padding: 10px;
+                        background: #f8f9fa;
+                        border-radius: 8px;
+                    `;
+
+                    newButtons.forEach(button => {
+                        const buttonElement = this.createButton(button);
+                        buttonsContainer.appendChild(buttonElement);
+
+                        // Track that we've shown this button type
+                        this.buttonHistory.add(button.type);
+                    });
+
+                    // Add to chat window
+                    if (this.chatWindow) {
+                        this.chatWindow.appendChild(buttonsContainer);
+                    }
+
+                    this.currentButtons = newButtons;
+                }
+
+                createButton(button) {
+                    const buttonElement = document.createElement('button');
+                    buttonElement.textContent = button.text;
+                    buttonElement.className = `btn btn-${button.style === 'primary' ? 'primary' : 'secondary'}`;
+                    buttonElement.style.cssText = `
+                        padding: 8px 16px;
+                        border: none;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        margin: 5px;
+                    `;
+
+                    // Set button color based on style
+                    if (button.style === 'primary') {
+                        buttonElement.style.backgroundColor = '#007bff';
+                        buttonElement.style.color = 'white';
+                    } else {
+                        buttonElement.style.backgroundColor = '#6c757d';
+                        buttonElement.style.color = 'white';
+                    }
+
+                    // Handle button click
+                    buttonElement.addEventListener('click', () => {
+                        this.handleButtonClick(button);
+                    });
+
+                    return buttonElement;
+                }
+
+                async handleButtonClick(button) {
+                    console.log('Button clicked:', button);
+
+                    // Handle different button types
+                    switch (button.type) {
+                        case 'appointment_booking':
+                            // Navigate to booking screen
+                            showScreen('bookingScreen');
+                            break;
+                        case 'medicine_scan':
+                            // Navigate to scan medicine screen
+                            showScreen('scanMedicineScreen');
+                            break;
+                        case 'prescription_view':
+                            // Navigate to prescriptions screen
+                            showScreen('prescriptionsScreen');
+                            break;
+                        case 'emergency_call':
+                            // Trigger emergency
+                            window.location.href = 'tel:108';
+                            break;
+                    }
+
+                    // Call button action API
+                    try {
+                        await fetch(`${API_BASE_URL}/v1/button-action`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                userId: user.patientId,
+                                buttonType: button.type,
+                                buttonAction: button.action,
+                                parameters: button.parameters || {}
+                            })
+                        });
+                    } catch (error) {
+                        console.error('Button action API error:', error);
+                    }
+
+                    // Clear buttons after click
+                    this.clearButtons();
+                }
+
+                clearButtons() {
+                    const existingButtons = document.querySelector('.interactive-buttons-container');
+                    if (existingButtons) {
+                        existingButtons.remove();
+                    }
+                    this.currentButtons = [];
+                }
+
+                displayMessage(message, sender = 'bot') {
+                    if (!this.chatWindow) return;
+
+                    const messageElement = document.createElement('div');
+                    messageElement.className = `chat-message ${sender}-message`;
+                    messageElement.textContent = message;
+                    this.chatWindow.appendChild(messageElement);
+                    this.chatWindow.scrollTop = this.chatWindow.scrollHeight;
+                }
+
+                async handleAction(action, parameters) {
+                    switch (action) {
+                        case 'Maps_TO_APPOINTMENT_BOOKING':
+                            showScreen('bookingScreen');
+                            break;
+                        case 'TRIGGER_SOS':
+                            this.displayMessage('🚨 Emergency services activated! Calling 108...', 'bot');
+                            setTimeout(() => {
+                                window.location.href = 'tel:108';
+                            }, 2000);
+                            break;
+                        case 'CONTINUE_FOLLOWUP':
+                            // Check if post-appointment follow-up is needed
+                            await this.checkPostAppointmentFollowup();
+                            break;
+                        case 'SHOW_PRESCRIPTION_SUMMARY':
+                            showScreen('prescriptionsScreen');
+                            break;
+                    }
+                }
+
+                async checkPostAppointmentFollowup() {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/v1/user-progress`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ userId: user.patientId })
+                        });
+
+                        const data = await response.json();
+                        if (data.followup && data.followup.needed) {
+                            this.displayMessage('How are you feeling after your appointment?', 'bot');
+                        }
+                    } catch (error) {
+                        console.error('Follow-up check error:', error);
+                    }
+                }
+            }
+
+            // Initialize enhanced chatbot
+            const enhancedChatbot = new SmartSehatSaharaChatbot();
+
             function setupChatbot() {
                 const chatForm = document.getElementById('chatForm');
                 const chatInput = document.getElementById('chatInput');
                 const chatWindow = document.getElementById('chatWindow');
-                const addMessage = (text, sender) => { const msgEl = document.createElement('div'); msgEl.classList.add('chat-message', `${sender}-message`); msgEl.textContent = text; chatWindow.appendChild(msgEl); chatWindow.scrollTop = chatWindow.scrollHeight; };
-                chatForm.addEventListener('submit', async (e) => { e.preventDefault(); const userInput = chatInput.value.trim(); if (!userInput) return; console.log('Frontend: Sending message:', userInput, 'userId:', user.patientId); addMessage(userInput, 'user'); chatInput.value = ''; const typingIndicator = document.createElement('div'); typingIndicator.classList.add('chat-message', 'bot-message'); typingIndicator.textContent = '...'; chatWindow.appendChild(typingIndicator); chatWindow.scrollTop = chatWindow.scrollHeight; try { const response = await fetch(`${API_BASE_URL}/v1/predict`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: userInput, userId: user.patientId, language: currentLanguage }) }); if (!response.ok) { throw new Error(`HTTP Error: ${response.status}`); } const data = await response.json(); chatWindow.removeChild(typingIndicator); addMessage(data.response, 'bot'); } catch (error) { console.error('Chat Error:', error); chatWindow.removeChild(typingIndicator); addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.", 'bot'); } });
-                addMessage("Welcome to the Sehat Sahara Health Assistant. How can I help you?", "bot");
+
+                const addMessage = (text, sender) => {
+                    const msgEl = document.createElement('div');
+                    msgEl.classList.add('chat-message', `${sender}-message`);
+                    msgEl.textContent = text;
+                    chatWindow.appendChild(msgEl);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                };
+
+                chatForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const userInput = chatInput.value.trim();
+                    if (!userInput) return;
+
+                    console.log('Frontend: Sending message:', userInput, 'userId:', user.patientId);
+                    addMessage(userInput, 'user');
+                    chatInput.value = '';
+
+                    const typingIndicator = document.createElement('div');
+                    typingIndicator.classList.add('chat-message', 'bot-message');
+                    typingIndicator.textContent = 'Typing...';
+                    chatWindow.appendChild(typingIndicator);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+                    try {
+                        // First check for emergency in user message
+                        const sosCheck = await checkForEmergency(userInput);
+                        if (sosCheck.emergency_detected) {
+                            chatWindow.removeChild(typingIndicator);
+
+                            // Show SOS alert
+                            const sosAlert = document.createElement('div');
+                            sosAlert.className = 'sos-alert';
+                            sosAlert.innerHTML = `
+                                <h3>🚨 EMERGENCY DETECTED!</h3>
+                                <p>${sosCheck.response}</p>
+                                <p><strong>Emergency Number: 108</strong></p>
+                            `;
+                            chatWindow.appendChild(sosAlert);
+
+                            // Auto-dial for critical emergencies
+                            if (sosCheck.critical && sosCheck.parameters.auto_dial) {
+                                setTimeout(() => {
+                                    window.location.href = `tel:${sosCheck.parameters.emergency_number}`;
+                                }, 3000);
+                            }
+
+                            chatWindow.scrollTop = chatWindow.scrollHeight;
+                            chatInput.value = '';
+                            return;
+                        }
+
+                        const response = await fetch(`${API_BASE_URL}/v1/predict`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                message: userInput,
+                                userId: user.patientId,
+                                language: currentLanguage
+                            })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP Error: ${response.status}`);
+                        }
+
+                        const data = await response.json();
+                        chatWindow.removeChild(typingIndicator);
+
+                        // Use enhanced chatbot handler
+                        await enhancedChatbot.handleChatbotResponse(data);
+
+                    } catch (error) {
+                        console.error('Chat Error:', error);
+                        chatWindow.removeChild(typingIndicator);
+                        addMessage("I'm sorry, I'm having trouble connecting right now. Please try again in a moment.", 'bot');
+                    }
+                });
+
+                addMessage("Welcome to Enhanced Sehat Sahara! I can help with appointments, prescriptions, medicine reminders, and health guidance.", "bot");
+
+                // Check for pending medicine reminders
+                checkMedicineReminders();
+
+                // Load prescription-based reminders
+                loadPrescriptionReminders();
+
+                // Show prescription sources information
+                setTimeout(() => {
+                    showAllPrescriptionSources();
+                }, 2000);
             }
 
             // WebRTC variables
@@ -1372,35 +1772,22 @@
             let iceCandidateQueue = [];
             let offerQueue = [];
             let isCallActive = false;
-            let isWebRTCInitialized = false;
-            let isInitializingWebRTC = false;
-            let connectionStatus = 'disconnected'; // disconnected, connecting, connected, failed
-            let connectionTimeout = null;
-            let signalingRetryCount = 0;
-            let maxSignalingRetries = 5;
-            let videoPlayPromises = new Map(); // Track ongoing play promises
-            let remoteStreamId = null; // Track current remote stream ID
-            let connectionQuality = { packetsLost: 0, packetsReceived: 0, bytesReceived: 0 }; // Connection quality metrics
-            let networkStatsInterval = null; // For monitoring connection quality
-            let hasAudioConnection = false; // Track if we have at least audio connection
-            let connectionMode = 'full'; // full, audio-only, connection-only
+            let isInitiator = false; // Role assignment for collision resolution
+            let retryCount = 0;
+            let maxRetries = 3;
+            let retryDelay = 1000; // Start with 1 second
 
-            // Enhanced WebRTC configuration with multiple STUN/TURN servers for global connectivity
-            const getOptimalICEServers = () => {
-                return [
-                    // Primary Google STUN servers
+            // Enhanced WebRTC configuration with multiple STUN/TURN servers
+            const configuration = {
+                iceServers: [
+                    // STUN servers for NAT traversal
                     { urls: 'stun:stun.l.google.com:19302' },
                     { urls: 'stun:stun1.l.google.com:19302' },
                     { urls: 'stun:stun2.l.google.com:19302' },
                     { urls: 'stun:stun3.l.google.com:19302' },
                     { urls: 'stun:stun4.l.google.com:19302' },
 
-                    // Additional STUN servers for redundancy
-                    { urls: 'stun:stun.nextcloud.com:443' },
-                    { urls: 'stun:stun.freeswitch.org:3478' },
-                    { urls: 'stun:stun.voip.blackberry.com:3478' },
-
-                    // TURN servers with credentials
+                    // TURN servers for fallback when STUN fails
                     {
                         urls: 'turn:openrelay.metered.ca:80',
                         username: 'openrelayproject',
@@ -1415,36 +1802,11 @@
                         urls: 'turn:openrelay.metered.ca:443?transport=tcp',
                         username: 'openrelayproject',
                         credential: 'openrelayproject'
-                    },
-
-                    // Additional TURN servers
-                    {
-                        urls: 'turn:turn.anyfirewall.com:443',
-                        username: 'webrtc',
-                        credential: 'webrtc'
-                    },
-
-                    // Public TURN servers (may have limitations)
-                    {
-                        urls: 'turn:relay.backups.cz',
-                        username: 'webrtc',
-                        credential: 'webrtc'
-                    },
-                    {
-                        urls: 'turn:relay.backups.cz?transport=tcp',
-                        username: 'webrtc',
-                        credential: 'webrtc'
                     }
-                ];
-            };
-
-            const configuration = {
-                iceServers: getOptimalICEServers(),
-                iceCandidatePoolSize: 20, // Increased for better candidate gathering
+                ],
+                iceCandidatePoolSize: 10,
                 bundlePolicy: 'max-bundle',
-                rtcpMuxPolicy: 'require',
-                iceTransportPolicy: 'all',
-                continualGatheringPolicy: 'gather_continually' // Continue gathering candidates
+                rtcpMuxPolicy: 'require'
             };
 
             function showCallScreen(doctorName, appointmentId) {
@@ -1452,110 +1814,66 @@
                 document.getElementById('callWithDoctor').textContent = `Consultation with ${doctorName}`;
                 document.getElementById('callScreen').classList.add('active');
 
-                // Verify video elements exist before initializing WebRTC
-                const remoteVideo = document.getElementById('remoteVideo');
-                const localVideo = document.getElementById('localVideo');
+                // Hide any existing connection status when showing call screen
+                hideConnectionStatus();
 
-                if (!remoteVideo) {
-                    console.error('Remote video element not found!');
-                    alert('Remote video element not found. Please refresh the page.');
-                    return;
-                }
-
-                if (!localVideo) {
-                    console.error('Local video element not found!');
-                    alert('Local video element not found. Please refresh the page.');
-                    return;
-                }
-
-                console.log('Video elements found, initializing WebRTC...');
                 initializeWebRTC();
             }
 
             async function initializeWebRTC() {
                 try {
-                    // Prevent multiple simultaneous initializations
-                    if (isInitializingWebRTC) {
-                        console.log('WebRTC initialization already in progress...');
-                        return;
-                    }
-
-                    isInitializingWebRTC = true;
-                    console.log('Initializing WebRTC...');
+                    console.log('Patient: Initializing WebRTC...');
 
                     // Check if WebRTC is supported
                     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                         throw new Error('WebRTC is not supported in this browser');
                     }
 
+                    // Show loading state
+                    showConnectionStatus('Requesting camera and microphone permissions...', 'info');
+
                     // Request camera and microphone permissions with better constraints
                     const constraints = {
                         video: {
                             width: { ideal: 640, max: 1280 },
                             height: { ideal: 480, max: 720 },
-                            facingMode: { ideal: "user" },
-                            frameRate: { ideal: 30, max: 30 }
+                            facingMode: "user"
                         },
                         audio: {
                             echoCancellation: true,
                             noiseSuppression: true,
-                            autoGainControl: true,
-                            sampleRate: { ideal: 44100 },
-                            channelCount: { ideal: 2 }
+                            autoGainControl: true
                         }
                     };
 
-                    console.log('Requesting media permissions...');
+                    console.log('Patient: Requesting media permissions...');
                     localStream = await navigator.mediaDevices.getUserMedia(constraints);
 
-                    console.log('Media permissions granted, setting up video...');
+                    console.log('Patient: Media permissions granted, setting up video...');
                     const localVideo = document.getElementById('localVideo');
                     if (localVideo) {
                         localVideo.srcObject = localStream;
-                        console.log('Local video srcObject set');
-
-                        // Ensure video tracks are enabled
-                        const videoTracks = localStream.getVideoTracks();
-                        videoTracks.forEach((track, index) => {
-                            console.log(`Local video track ${index + 1} enabled:`, track.enabled);
-                            if (!track.enabled) {
-                                track.enabled = true;
-                                console.log(`Enabled local video track ${index + 1}`);
-                            }
-                        });
-
                         try {
-                            console.log('🎥 Local video stream attached:', {
-                                streamId: localStream.id,
-                                trackCount: localStream.getTracks().length,
-                                videoTracks: localStream.getVideoTracks().length,
-                                audioTracks: localStream.getAudioTracks().length
-                            });
-
-                            updateVideoStatus(localVideo, 'Stream Attached');
-                            await playVideoElement(localVideo);
-                            console.log('✅ Local video playing successfully');
-                            updateVideoStatus(localVideo, 'Playing');
+                            await localVideo.play();
+                            console.log('Patient: Local video playing successfully');
                         } catch (playError) {
-                            console.warn('❌ Local video play failed:', playError);
-                            updateVideoStatus(localVideo, 'Play Failed');
-                            if (playError.name === 'NotAllowedError') {
-                                updateVideoStatus(localVideo, 'Click to Play');
-                                showVideoPlayButton(localVideo);
-                            }
+                            console.warn('Patient: Local video play failed:', playError);
+                            // Continue anyway, the video element might still work
                         }
                     }
 
+                    // Wait a bit before creating peer connection to avoid race conditions
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
                     createPeerConnection();
                     isCallActive = true;
-                    isWebRTCInitialized = true;
-                    isInitializingWebRTC = false;
-                    console.log('WebRTC initialized successfully');
+                    console.log('Patient: WebRTC initialized successfully');
+
+                    // Update status
+                    showConnectionStatus('WebRTC ready. Click "Start Call" to begin.', 'success');
 
                 } catch (error) {
-                    console.error('Error accessing media devices:', error);
-                    isInitializingWebRTC = false;
-                    isWebRTCInitialized = false;
+                    console.error('Patient: Error accessing media devices:', error);
 
                     let errorMessage = 'Could not access camera/microphone. ';
 
@@ -1571,7 +1889,8 @@
                         errorMessage += 'Please check your camera and microphone permissions.';
                     }
 
-                    alert(errorMessage);
+                    showConnectionStatus(errorMessage, 'error');
+                    throw error; // Re-throw to be handled by caller
                 }
             }
 
@@ -1582,169 +1901,147 @@
 
                     // Add local stream tracks
                     if (localStream) {
-                        const videoTracks = localStream.getVideoTracks();
-                        const audioTracks = localStream.getAudioTracks();
-
-                        console.log('Local stream tracks:', {
-                            video: videoTracks.length,
-                            audio: audioTracks.length
-                        });
-
-                        // Add video tracks first
-                        videoTracks.forEach((track, index) => {
-                            console.log(`Adding video track ${index + 1}:`, {
-                                id: track.id,
-                                label: track.label,
-                                enabled: track.enabled,
-                                settings: track.getSettings()
-                            });
+                        localStream.getTracks().forEach(track => {
+                            console.log('Adding track:', track.kind);
                             peerConnection.addTrack(track, localStream);
                         });
-
-                        // Add audio tracks
-                        audioTracks.forEach((track, index) => {
-                            console.log(`Adding audio track ${index + 1}:`, {
-                                id: track.id,
-                                label: track.label,
-                                enabled: track.enabled,
-                                settings: track.getSettings()
-                            });
-                            peerConnection.addTrack(track, localStream);
-                        });
-                    } else {
-                        console.error('No local stream available when creating peer connection');
                     }
 
                     // Handle remote stream
                     peerConnection.ontrack = event => {
-                        const stream = event.streams[0];
-                        const streamId = stream.id;
-
-                        console.log('Received remote stream:', streamId);
-                        console.log('Stream tracks:', stream.getTracks());
-
-                        // Skip if this is the same stream we already have
-                        if (remoteStreamId === streamId) {
-                            console.log('Same remote stream received, ignoring');
-                            return;
-                        }
+                        console.log('Patient: Received remote stream from doctor', event.streams[0]);
+                        console.log('Patient: Stream tracks:', event.streams[0].getTracks());
 
                         const remoteVideo = document.getElementById('remoteVideo');
-                        if (remoteVideo) {
-                            // Only update if we have a different stream
-                            if (remoteStreamId !== streamId) {
-                                console.log(`Setting new remote video srcObject: ${streamId}`);
-                                remoteStreamId = streamId;
-                                remoteVideo.srcObject = stream;
-                                remoteVideo.classList.add('remote-video');
+                        if (remoteVideo && event.streams[0]) {
+                            // Check if srcObject is already set to avoid unnecessary changes
+                            if (remoteVideo.srcObject !== event.streams[0]) {
+                                console.log('Patient: Attaching remote stream to video element');
+                                remoteVideo.srcObject = event.streams[0];
                             }
 
-                            // Enhanced debugging for video track attachment
-                            console.log('🎥 Remote video stream attached:', {
-                                streamId: stream.id,
-                                trackCount: stream.getTracks().length,
-                                videoTracks: stream.getVideoTracks().length,
-                                audioTracks: stream.getAudioTracks().length
-                            });
+                            // More robust play method to handle race conditions and autoplay policies
+                            const playVideo = async (videoElement, retryCount = 0) => {
+                                try {
+                                    console.log('Patient: Attempting to play remote video, attempt:', retryCount + 1);
 
-                            // Update video status
-                            updateVideoStatus(remoteVideo, 'Stream Attached');
+                                    // Wait for the srcObject to be fully loaded
+                                    await new Promise(resolve => setTimeout(resolve, 200));
 
-                            // Use the robust play function with a delay
-                            setTimeout(() => {
-                                playVideoElement(remoteVideo).then(() => {
-                                    console.log('✅ Remote video playing successfully');
-                                    updateVideoStatus(remoteVideo, 'Playing');
-                                    updateConnectionStatus('connected');
-                                }).catch(error => {
-                                    console.warn('⚠️ Remote video play failed, but connection may still work:', error.message);
-                                    updateVideoStatus(remoteVideo, 'Play Failed');
-                                    if (error.name === 'NotAllowedError') {
-                                        console.log('Autoplay blocked, user interaction required');
-                                        updateVideoStatus(remoteVideo, 'Click to Play');
-                                        showVideoPlayButton(remoteVideo);
-                                    } else if (error.message.includes('Video load timeout')) {
-                                        console.log('Video load timeout - connection established without video');
-                                        updateVideoStatus(remoteVideo, 'Audio Only');
-                                        // Still consider connection successful for audio
-                                        hasAudioConnection = true;
-                                        updateConnectionStatus('connected');
-                                    } else {
-                                        console.error('Unhandled video play error:', error);
+                                    if (!videoElement) {
+                                        console.error('Patient: Video element not found');
+                                        return;
                                     }
-                                });
-                            }, 500); // Give more time for the stream to be ready
+
+                                    // Check if video is already playing
+                                    if (!videoElement.paused && !videoElement.ended) {
+                                        console.log('Patient: Remote video is already playing');
+                                        showConnectionStatus('Remote video connected and playing!', 'success');
+                                        return;
+                                    }
+
+                                    // Try to play the video
+                                    await videoElement.play();
+                                    console.log('Patient: Remote video playing successfully');
+
+                                    // Update UI to show video is connected
+                                    showConnectionStatus('Remote video connected and playing!', 'success');
+
+                                    // Update button text
+                                    const startCallBtn = document.getElementById('startCallBtn');
+                                    if (startCallBtn) {
+                                        startCallBtn.textContent = 'Call Active';
+                                    }
+
+                                } catch (e) {
+                                    console.warn('Patient: Remote video play failed:', e);
+
+                                    if (e.name === 'NotAllowedError') {
+                                        console.error('Patient: Video autoplay blocked by browser policy');
+                                        showConnectionStatus('Video autoplay blocked. Click to enable video.', 'warning');
+
+                                        // Add click handler to enable video
+                                        videoElement.addEventListener('click', () => {
+                                            videoElement.play().then(() => {
+                                                console.log('Patient: Video enabled by user click');
+                                                showConnectionStatus('Video enabled successfully!', 'success');
+                                            }).catch(err => console.error('Patient: Failed to enable video:', err));
+                                        }, { once: true });
+
+                                    } else if (e.name === 'AbortError' && retryCount < 3) {
+                                        console.log('Patient: Video play aborted, retrying...');
+                                        setTimeout(() => playVideo(videoElement, retryCount + 1), 500);
+                                    } else {
+                                        console.error('Patient: Remote video play failed permanently:', e);
+                                        showConnectionStatus('Video connection issue: ' + e.message, 'error');
+                                    }
+                                }
+                            };
+
+                            playVideo(remoteVideo);
+                        } else {
+                            console.error('Patient: Remote video element or stream not found');
                         }
                     };
 
                     // Handle connection state changes
                     peerConnection.onconnectionstatechange = () => {
-                        console.log('Connection state:', peerConnection.connectionState);
+                        console.log('Patient: Connection state changed to:', peerConnection.connectionState);
+                        console.log('Patient: Signaling state:', peerConnection.signalingState);
+
                         if (peerConnection.connectionState === 'connected') {
-                            console.log('✅ Peers connected successfully');
-
-                            // Clear connection timeout since we're connected
-                            if (connectionTimeout) {
-                                clearTimeout(connectionTimeout);
-                                connectionTimeout = null;
+                            console.log('Patient: Connected to doctor successfully');
+                            showConnectionStatus('Connected successfully!', 'success');
+                            // Update UI to show connected state
+                            const startCallBtn = document.getElementById('startCallBtn');
+                            if (startCallBtn) {
+                                startCallBtn.textContent = 'Connected';
+                                startCallBtn.disabled = true;
                             }
-
-                            // Mark that we have at least a basic connection
-                            hasAudioConnection = true;
-                            updateConnectionStatus('connected');
-
-                            // Start connection quality monitoring
-                            startConnectionQualityMonitoring();
-
-                            // Check video element display after a delay
-                            setTimeout(() => {
-                                verifyVideoElementsDisplay();
-                            }, 2000);
-
-                            // Verify that we have remote tracks
-                            setTimeout(() => {
-                                const receivers = peerConnection.getReceivers();
-                                const hasRemoteTracks = receivers.some(receiver => receiver.track);
-
-                                if (!hasRemoteTracks) {
-                                    console.warn('⚠️ Connected but no remote tracks received - may be audio-only connection');
-                                    console.log('Available receivers:', receivers.length);
-                                    debugConnectionInfo();
-                                } else {
-                                    console.log(`✅ Successfully receiving ${receivers.length} remote tracks`);
-                                    receivers.forEach((receiver, index) => {
-                                        if (receiver.track) {
-                                            console.log(`  Track ${index + 1}: ${receiver.track.kind} - ${receiver.track.enabled ? 'enabled' : 'disabled'}`);
-                                        }
-                                    });
-                                }
-
-                                // Send a test message if data channel is available
-                                if (dataChannel && dataChannel.readyState === 'open') {
-                                    console.log('📡 Sending connection test message...');
-                                    dataChannel.send(JSON.stringify({
-                                        type: 'connection_test',
-                                        timestamp: Date.now(),
-                                        message: 'Connection established successfully'
-                                    }));
-                                }
-                            }, 1000);
-
                         } else if (peerConnection.connectionState === 'failed') {
-                            console.error('Connection failed');
-                            updateConnectionStatus('failed');
+                            console.error('Patient: Connection failed');
+                            showConnectionStatus('Connection failed. Please try again.', 'error');
                             handleConnectionFailure();
+                        } else if (peerConnection.connectionState === 'connecting') {
+                            console.log('Patient: Attempting to connect...');
+                            showConnectionStatus('Connecting to doctor...', 'info');
+                        } else if (peerConnection.connectionState === 'new') {
+                            console.log('Patient: New connection state');
+                            hideConnectionStatus();
                         } else if (peerConnection.connectionState === 'disconnected') {
-                            console.log('Peer disconnected');
-                            updateConnectionStatus('disconnected');
+                            console.log('Patient: Disconnected from doctor');
+                            showConnectionStatus('Reconnecting...', 'warning');
                             handlePeerDisconnection();
                         } else if (peerConnection.connectionState === 'closed') {
-                            console.log('Connection closed');
-                            updateConnectionStatus('disconnected');
-                        } else if (peerConnection.connectionState === 'connecting' || peerConnection.connectionState === 'new') {
-                            updateConnectionStatus('connecting');
+                            console.log('Patient: Connection closed');
+                            hideConnectionStatus();
                         }
                     };
+
+                    // Handle signaling state changes for debugging
+                    peerConnection.onsignalingstatechange = () => {
+                        console.log('Patient: Signaling state changed to:', peerConnection.signalingState);
+                    };
+
+                    // Enhanced track event debugging
+                    peerConnection.onaddstream = event => {
+                        console.log('Patient: Stream added:', event.stream);
+                        console.log('Patient: Stream tracks:', event.stream.getTracks());
+                    };
+
+                    // Monitor track events for debugging
+                    localStream.getTracks().forEach(track => {
+                        track.onended = () => {
+                            console.warn('Patient: Local track ended:', track.kind);
+                            showConnectionStatus(`Local ${track.kind} track ended`, 'warning');
+                        };
+                        track.onmute = () => {
+                            console.warn('Patient: Local track muted:', track.kind);
+                        };
+                        track.onunmute = () => {
+                            console.log('Patient: Local track unmuted:', track.kind);
+                        };
+                    });
 
                     // Handle ICE connection state changes
                     peerConnection.oniceconnectionstatechange = () => {
@@ -1757,51 +2054,11 @@
                         }
                     };
 
-                    // Enhanced ICE candidate handling with prioritization
+                    // Handle ICE candidates
                     peerConnection.onicecandidate = event => {
                         if (event.candidate) {
-                            const candidateInfo = {
-                                type: event.candidate.type,
-                                protocol: event.candidate.protocol,
-                                address: event.candidate.address,
-                                port: event.candidate.port,
-                                priority: event.candidate.priority,
-                                foundation: event.candidate.foundation
-                            };
-
-                            console.log('ICE candidate gathered:', candidateInfo);
-
-                            // Prioritize candidates based on type and protocol
-                            let delay = 0;
-
-                            if (event.candidate.type === 'host') {
-                                console.log('Host candidate - sending immediately');
-                                delay = 0;
-                            } else if (event.candidate.type === 'srflx') {
-                                console.log('Server reflexive candidate - sending soon');
-                                delay = 50; // Small delay to prefer host candidates
-                            } else if (event.candidate.protocol === 'tcp') {
-                                console.log('TCP candidate - sending with delay');
-                                delay = 200; // Prefer UDP for media
-                            } else {
-                                console.log('Relay candidate - sending last');
-                                delay = 500; // Last priority for TURN servers
-                            }
-
-                            setTimeout(() => {
-                                sendSignalingMessage('ice', event.candidate);
-                            }, delay);
-                        } else {
-                            console.log('ICE candidate gathering completed');
-                        }
-                    };
-
-                    // Monitor ICE gathering state
-                    peerConnection.onicegatheringstatechange = () => {
-                        console.log('ICE gathering state:', peerConnection.iceGatheringState);
-
-                        if (peerConnection.iceGatheringState === 'complete') {
-                            console.log('ICE gathering completed - all candidates gathered');
+                            console.log('Sending ICE candidate');
+                            sendSignalingMessage('ice', event.candidate);
                         }
                     };
 
@@ -1809,34 +2066,10 @@
                     try {
                         dataChannel = peerConnection.createDataChannel('messages');
                         dataChannel.onmessage = event => {
-                            try {
-                                const message = JSON.parse(event.data);
-                                if (message.type === 'pong') {
-                                    console.log('🏓 Received pong response:', message);
-                                } else if (message.type === 'connection_test') {
-                                    console.log('✅ Connection test successful:', message);
-                                } else {
-                                    displayMessage(event.data, 'doctor');
-                                }
-                            } catch (e) {
-                                // Not JSON, treat as regular message
-                                displayMessage(event.data, 'doctor');
-                            }
+                            displayMessage(event.data, 'doctor');
                         };
-                        dataChannel.onopen = () => {
-                            console.log('✅ Data channel opened');
-                            // Send a connection test when data channel opens
-                            setTimeout(() => {
-                                if (dataChannel && dataChannel.readyState === 'open') {
-                                    dataChannel.send(JSON.stringify({
-                                        type: 'connection_test',
-                                        message: 'Data channel connection verified',
-                                        timestamp: Date.now()
-                                    }));
-                                }
-                            }, 1000);
-                        };
-                        dataChannel.onclose = () => console.log('❌ Data channel closed');
+                        dataChannel.onopen = () => console.log('Data channel opened');
+                        dataChannel.onclose = () => console.log('Data channel closed');
                     } catch (error) {
                         console.warn('Failed to create data channel:', error);
                     }
@@ -1861,26 +2094,6 @@
 
             async function startCall() {
                 try {
-                    // Check if WebRTC is currently initializing
-                    if (isInitializingWebRTC) {
-                        console.log('WebRTC is still initializing, please wait...');
-                        showConfirmationModal('Initializing', 'Please wait for the video connection to initialize...');
-                        return;
-                    }
-
-                    // Check if WebRTC is properly initialized
-                    if (!isWebRTCInitialized || !peerConnection) {
-                        console.log('WebRTC not initialized, initializing now...');
-                        try {
-                            await initializeWebRTC();
-                            // Wait a bit for initialization to complete
-                            await new Promise(resolve => setTimeout(resolve, 1500));
-                        } catch (initError) {
-                            console.error('WebRTC initialization failed:', initError);
-                            throw new Error('Failed to initialize video connection');
-                        }
-                    }
-
                     if (!peerConnection) {
                         throw new Error('Peer connection not initialized');
                     }
@@ -1889,259 +2102,292 @@
                         throw new Error('Local stream not available');
                     }
 
-                    // Add null check before accessing signalingState
-                    if (!peerConnection.signalingState) {
-                        console.warn('Peer connection signaling state not available yet');
-                        return;
-                    }
-
-                    console.log('Starting call, current signaling state:', peerConnection.signalingState);
-                    updateConnectionStatus('connecting');
+                    console.log('Patient: Starting call, current signaling state:', peerConnection.signalingState);
+                    console.log('Patient: Current connection state:', peerConnection.connectionState);
 
                     // Check if we're already in a call or have an offer pending
                     if (peerConnection.signalingState !== 'stable') {
-                        console.log('Not in stable state, cannot create offer');
-                        updateConnectionStatus('failed');
+                        console.log('Patient: Not in stable state, cannot create offer. Current state:', peerConnection.signalingState);
+
+                        // If we're in 'have-remote-offer' state, it means doctor initiated the call
+                        if (peerConnection.signalingState === 'have-remote-offer') {
+                            console.log('Patient: Doctor initiated the call, creating answer instead...');
+                            return await answerCall();
+                        }
+
+                        console.log('Patient: Waiting for stable state before creating offer...');
                         return;
                     }
 
-                    console.log('Creating offer...');
-                    let offer;
-                    try {
-                        offer = await peerConnection.createOffer({
-                            offerToReceiveAudio: true,
-                            offerToReceiveVideo: true,
-                            iceRestart: false
-                        });
-                        console.log('Offer created successfully');
-                    } catch (offerError) {
-                        console.error('Failed to create offer:', offerError);
-                        if (offerError.name === 'InvalidStateError') {
-                            console.log('Invalid state for offer creation, peer connection may need reset');
-                            throw new Error('Connection state invalid for call initiation');
-                        }
-                        throw offerError;
+                    // Set initiator role
+                    isInitiator = true;
+
+                    console.log('Patient: Creating offer...');
+                    const offer = await peerConnection.createOffer({
+                        offerToReceiveAudio: true,
+                        offerToReceiveVideo: true
+                    });
+
+                    console.log('Patient: Setting local description...');
+                    await peerConnection.setLocalDescription(offer);
+
+                    console.log('Patient: Sending offer via signaling...');
+                    await sendSignalingMessageWithRetry('offer', offer);
+
+                    // Update UI
+                    const startCallBtn = document.getElementById('startCallBtn');
+                    if (startCallBtn) {
+                        startCallBtn.disabled = true;
+                        startCallBtn.textContent = 'Connecting...';
                     }
 
-                    console.log('Setting local description...');
-                    try {
-                        await peerConnection.setLocalDescription(offer);
-                        console.log('Local description set successfully');
-                    } catch (descError) {
-                        console.error('Failed to set local description:', descError);
-                        throw new Error('Failed to establish local connection parameters');
-                    }
-
-                    console.log('Sending offer via signaling...');
-                    sendSignalingMessage('offer', offer);
-
-                    // Set connection timeout (increased for cross-network scenarios)
-                    connectionTimeout = setTimeout(() => {
-                        if (isCallActive && peerConnection && peerConnection.connectionState !== 'connected') {
-                            console.error('Connection timeout - no response from peer after 25 seconds');
-                            updateConnectionStatus('failed');
-                            handleConnectionFailure();
-                        }
-                    }, 25000); // Increased to 25 seconds for cross-network scenarios
-
-                    // Set a timeout to check if remote stream is received
-                    setTimeout(() => {
-                        if (isCallActive && peerConnection && peerConnection.connectionState === 'connected') {
-                            const remoteVideo = document.getElementById('remoteVideo');
-                            if (remoteVideo && !remoteVideo.srcObject) {
-                                console.warn('No remote stream received, but connection is established');
-                                debugConnectionInfo();
-                            }
-                        }
-                    }, 5000);
-
-                    console.log('Call started successfully');
+                    console.log('Patient: Call started successfully');
                 } catch (error) {
-                    console.error('Error starting call:', error);
-                    console.error('Signaling state:', peerConnection?.signalingState);
-                    console.error('Connection state:', peerConnection?.connectionState);
-                    updateConnectionStatus('failed');
+                    console.error('Patient: Error starting call:', error);
+                    console.error('Patient: Signaling state:', peerConnection.signalingState);
+                    console.error('Patient: Connection state:', peerConnection.connectionState);
 
-                    if (error.name === 'InvalidStateError') {
-                        console.log('Invalid state error, peer connection may need to be reset');
-                        alert('Call setup failed. Please try again.');
-                    } else if (error.message.includes('Peer connection not initialized')) {
-                        console.log('Peer connection not initialized, reinitializing...');
-                        await initializeWebRTC();
-                        alert('Connection initialized. Please try starting the call again.');
+                    if (retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`Patient: Retrying call start (${retryCount}/${maxRetries}) in ${retryDelay}ms...`);
+                        setTimeout(() => startCall(), retryDelay);
+                        retryDelay *= 2; // Exponential backoff
                     } else {
-                        alert('Failed to start call: ' + error.message);
+                        console.error('Patient: Max retries reached, giving up');
+                        alert('Failed to start call after multiple attempts. Please refresh and try again.');
+                        retryCount = 0;
+                        retryDelay = 1000;
                     }
+                }
+            }
+
+            async function answerCall() {
+                try {
+                    if (!peerConnection) {
+                        throw new Error('Peer connection not initialized');
+                    }
+
+                    console.log('Patient: Answering call, creating answer...');
+
+                    const answer = await peerConnection.createAnswer({
+                        offerToReceiveAudio: true,
+                        offerToReceiveVideo: true
+                    });
+
+                    console.log('Patient: Setting local description with answer...');
+                    await peerConnection.setLocalDescription(answer);
+
+                    console.log('Patient: Sending answer via signaling...');
+                    sendSignalingMessage('answer', answer);
+
+                    // Update UI
+                    const startCallBtn = document.getElementById('startCallBtn');
+                    if (startCallBtn) {
+                        startCallBtn.disabled = true;
+                        startCallBtn.textContent = 'Connected';
+                    }
+
+                    console.log('Patient: Answer sent successfully');
+                } catch (error) {
+                    console.error('Patient: Error answering call:', error);
+                    alert('Failed to answer call: ' + error.message);
                 }
             }
 
             async function handleSignalingMessage(type, data) {
                 try {
-                    console.log('Handling signaling message:', type);
+                    console.log(`Patient: Handling ${type} signaling message`);
+                    console.log(`Patient: Current signaling state: ${peerConnection?.signalingState}`);
+                    console.log(`Patient: Current connection state: ${peerConnection?.connectionState}`);
 
                     if (!peerConnection) {
-                        console.warn('Peer connection not initialized, cannot handle', type, 'message');
-                        return;
-                    }
-
-                    // Validate data
-                    if (!data) {
-                        console.warn('Invalid signaling data for', type, 'message');
+                        console.warn('Patient: Peer connection not initialized');
                         return;
                     }
 
                     if (type === 'offer') {
-                        console.log('Received offer, signaling state:', peerConnection.signalingState);
+                        console.log('Patient: Received offer from doctor');
 
-                        try {
-                            if (peerConnection.signalingState === 'stable') {
-                                // Standard case: we're waiting for an offer (callee)
-                                console.log('Setting remote description for offer...');
-                                await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
-                                console.log('Creating answer...');
-                                const answer = await peerConnection.createAnswer();
-                                await peerConnection.setLocalDescription(answer);
-                                console.log('Sending answer...');
-                                sendSignalingMessage('answer', answer);
-                            } else if (peerConnection.signalingState === 'have-local-offer') {
-                                // We have a local offer but received a remote offer - offer collision
-                                console.log('Offer collision detected, prioritizing remote offer...');
-                                // Rollback local offer and accept remote offer
-                                await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
-                                console.log('Creating answer for remote offer...');
-                                const answer = await peerConnection.createAnswer();
-                                await peerConnection.setLocalDescription(answer);
-                                console.log('Sending answer...');
-                                sendSignalingMessage('answer', answer);
-                            } else if (peerConnection.signalingState === 'have-remote-offer') {
-                                // We received an offer while we already have a remote offer
-                                console.log('Already have remote offer, replacing with new offer...');
-                                await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
-                                console.log('Creating answer for new offer...');
-                                const answer = await peerConnection.createAnswer();
-                                await peerConnection.setLocalDescription(answer);
-                                console.log('Sending answer...');
-                                sendSignalingMessage('answer', answer);
-                            } else if (peerConnection.signalingState === 'closed') {
-                                console.warn('Peer connection is closed, cannot handle offer');
+                        // Check if we're already handling an offer or in a call
+                        if (peerConnection.signalingState === 'have-remote-offer') {
+                            console.log('Patient: Already have a remote offer, ignoring duplicate');
+                            return;
+                        }
+
+                        if (peerConnection.signalingState === 'have-local-offer') {
+                            console.log('Patient: Collision detected - both peers trying to call');
+                            console.log('Patient: Patient sent offer, doctor also sent offer');
+
+                            // Implement proper collision resolution
+                            // Since both sent offers, we need to decide who becomes the caller
+                            // Use a simple deterministic approach based on appointment ID
+                            const shouldBeCaller = currentAppointmentId.localeCompare('demo') <= 0;
+
+                            if (shouldBeCaller) {
+                                console.log('Patient: Patient becomes caller due to appointment ID priority');
+                                // Patient becomes caller - ignore doctor's offer and continue with patient's offer
                                 return;
                             } else {
-                                // For other states, queue the offer for later processing
-                                console.log('Queueing offer for later processing, state:', peerConnection.signalingState);
-                                offerQueue.push(data);
-
-                                // Try to process queued offers periodically
-                                if (offerQueue.length === 1) {
-                                    setTimeout(processQueuedOffers, 1000);
-                                }
-                            }
-                        } catch (error) {
-                            console.error('Error handling offer:', error);
-                            console.error('Signaling state:', peerConnection.signalingState);
-                            console.error('Connection state:', peerConnection.connectionState);
-
-                            // If we get a state error, try to recover by resetting
-                            if (error.name === 'InvalidStateError') {
-                                console.log('Attempting to recover from invalid state...');
-                                try {
-                                    // Try to set remote description anyway
-                                    await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
-                                    const answer = await peerConnection.createAnswer();
-                                    await peerConnection.setLocalDescription(answer);
-                                    sendSignalingMessage('answer', answer);
-                                } catch (recoveryError) {
-                                    console.error('Recovery failed:', recoveryError);
-                                }
+                                console.log('Patient: Doctor becomes caller, patient becomes callee');
+                                // Patient becomes callee - reset and accept doctor's offer
+                                resetConnection();
                             }
                         }
-                    } else if (type === 'answer') {
-                        console.log('Received answer, setting remote description...');
+
+                        console.log('Patient: Setting remote description with doctor\'s offer...');
+                        await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
+
+                        console.log('Patient: Creating answer...');
+                        const answer = await peerConnection.createAnswer();
+
+                        console.log('Patient: Setting local description with answer...');
+                        await peerConnection.setLocalDescription(answer);
+
+                        console.log('Patient: Sending answer via signaling...');
+                        sendSignalingMessage('answer', answer);
+
+                        // Update UI to show we're connected
+                        const startCallBtn = document.getElementById('startCallBtn');
+                        if (startCallBtn) {
+                            startCallBtn.textContent = 'Connected';
+                            startCallBtn.disabled = true;
+                        }
+
+                        console.log('Patient: Successfully answered doctor\'s call');
+                        return;
+                    }
+                    else if (type === 'answer') {
+                        console.log('Patient: Received answer, checking if we can handle it...');
+
+                        // Only accept answers if we have sent an offer and are waiting for an answer
                         if (peerConnection.signalingState === 'have-local-offer') {
+                            console.log('Patient: Setting remote description with answer...');
                             await peerConnection.setRemoteDescription(new RTCSessionDescription(data));
-                            console.log('Remote description set successfully');
+                            console.log('Patient: Remote description set successfully');
 
                             // Process any queued candidates after setting the description
                             if (iceCandidateQueue.length > 0) {
-                                console.log('Processing queued ICE candidates:', iceCandidateQueue.length);
+                                console.log(`Patient: Processing ${iceCandidateQueue.length} queued ICE candidates`);
                                 for (const candidate of iceCandidateQueue) {
                                     try {
                                         await peerConnection.addIceCandidate(candidate);
+                                        console.log('Patient: Queued ICE candidate added successfully');
                                     } catch (error) {
-                                        console.warn('Failed to add queued candidate:', error);
+                                        console.warn('Patient: Failed to add queued candidate:', error);
                                     }
                                 }
                                 iceCandidateQueue = [];
                             }
                         } else {
-                            console.warn('Cannot handle answer in signaling state:', peerConnection.signalingState);
+                            console.warn('Patient: Cannot handle answer - wrong signaling state:', peerConnection.signalingState);
+                            console.warn('Patient: Expected "have-local-offer" but got:', peerConnection.signalingState);
+
+                            // If we're in stable state but expecting an answer, this indicates a collision
+                            // The doctor might have also initiated a call
+                            if (peerConnection.signalingState === 'stable') {
+                                console.log('Patient: Detected collision - both peers trying to call. Patient will wait...');
+                                // Wait for the doctor's offer to arrive and be processed
+                                setTimeout(() => {
+                                    if (peerConnection && peerConnection.signalingState === 'stable') {
+                                        console.log('Patient: No doctor offer received, retrying as caller...');
+                                        startCall();
+                                    }
+                                }, 2000);
+                            }
                         }
                     } else if (type === 'ice') {
-                        console.log('Received ICE candidate');
+                        console.log('Patient: Received ICE candidate');
                         const candidate = new RTCIceCandidate(data);
 
                         if (peerConnection.remoteDescription) {
                             try {
                                 await peerConnection.addIceCandidate(candidate);
-                                console.log('ICE candidate added successfully');
+                                console.log('Patient: ICE candidate added successfully');
                             } catch (error) {
-                                console.warn('Failed to add ICE candidate:', error);
+                                console.warn('Patient: Failed to add ICE candidate:', error);
                             }
                         } else {
-                            console.log('Queueing ICE candidate');
+                            console.log('Patient: Queueing ICE candidate (no remote description yet)');
                             iceCandidateQueue.push(candidate);
                         }
                     }
                 } catch (error) {
-                    console.error('Error handling signaling message:', error);
-                    console.error('Signaling state:', peerConnection?.signalingState);
-                    console.error('Connection state:', peerConnection?.connectionState);
+                    console.error('Patient: Error handling signaling message:', error);
+                    console.error('Patient: Signaling state:', peerConnection?.signalingState);
+                    console.error('Patient: Connection state:', peerConnection?.connectionState);
+                    console.error('Patient: Error details:', error.message);
                 }
+            }
+
+            function resetConnection() {
+                console.log('Patient: Resetting connection due to collision...');
+
+                // Close existing connection
+                if (peerConnection) {
+                    peerConnection.close();
+                    peerConnection = null;
+                }
+
+                // Clear queues
+                iceCandidateQueue = [];
+                offerQueue = [];
+
+                // Reset retry state
+                retryCount = 0;
+                retryDelay = 1000;
+
+                // Create new peer connection
+                createPeerConnection();
+
+                console.log('Patient: Connection reset complete');
             }
 
             function sendSignalingMessage(type, data) {
-                if (!currentAppointmentId) {
-                    console.error('No appointment ID for signaling message');
-                    return;
-                }
-
-                const messageData = {
-                    appointmentId: currentAppointmentId,
-                    data: data,
-                    timestamp: Date.now()
-                };
-
-                console.log(`📤 Sending ${type} signaling message:`, {
-                    appointmentId: currentAppointmentId,
-                    messageType: type,
-                    dataSize: JSON.stringify(data).length,
-                    timestamp: new Date().toISOString()
-                });
-
+                console.log(`Patient: Sending ${type} via signaling`);
                 fetch(`${API_BASE_URL}/v1/webrtc/${type}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(messageData)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    console.log(`${type} signaling message sent successfully`);
-                    signalingRetryCount = 0; // Reset retry count on success
-                })
-                .catch(error => {
-                    console.error(`${type} signaling error:`, error);
-                    signalingRetryCount++;
-
-                    if (signalingRetryCount <= maxSignalingRetries) {
-                        console.log(`Retrying ${type} message (attempt ${signalingRetryCount}/${maxSignalingRetries})`);
-                        setTimeout(() => sendSignalingMessage(type, data), 1000 * signalingRetryCount);
-                    } else {
-                        console.error(`Max signaling retries reached for ${type} message`);
-                        updateConnectionStatus('failed');
-                    }
+                    body: JSON.stringify({ appointmentId: currentAppointmentId, data: data })
+                }).catch(error => {
+                    console.error('Patient: Signaling error:', error);
+                    // Retry signaling after a short delay
+                    setTimeout(() => {
+                        console.log(`Patient: Retrying ${type} signaling`);
+                        sendSignalingMessage(type, data);
+                    }, 2000);
                 });
             }
+
+            async function sendSignalingMessageWithRetry(type, data) {
+                return new Promise((resolve, reject) => {
+                    const attemptSend = (attemptNumber) => {
+                        console.log(`Patient: Sending ${type} via signaling (attempt ${attemptNumber})`);
+
+                        fetch(`${API_BASE_URL}/v1/webrtc/${type}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ appointmentId: currentAppointmentId, data: data })
+                        }).then(() => {
+                            console.log(`Patient: ${type} sent successfully`);
+                            resolve();
+                        }).catch(error => {
+                            console.error(`Patient: Signaling error on attempt ${attemptNumber}:`, error);
+
+                            if (attemptNumber < maxRetries) {
+                                const delay = retryDelay * Math.pow(2, attemptNumber - 1);
+                                console.log(`Patient: Retrying ${type} in ${delay}ms...`);
+                                setTimeout(() => attemptSend(attemptNumber + 1), delay);
+                            } else {
+                                console.error(`Patient: Max retries reached for ${type}`);
+                                reject(error);
+                            }
+                        });
+                    };
+
+                    attemptSend(1);
+                });
+            }
+
 
             function pollSignaling() {
                 if (!currentAppointmentId) return;
@@ -2154,390 +2400,88 @@
                         return response.json();
                     })
                     .then(messages => {
-                        if (messages.length > 0) {
-                            console.log(`📥 Received ${messages.length} signaling messages:`, messages.map(m => ({
-                                type: m.type,
-                                timestamp: new Date(m.timestamp || Date.now()).toISOString(),
-                                dataSize: JSON.stringify(m.data).length
-                            })));
-                            messages.forEach(msg => {
-                                console.log('🔄 Processing message:', msg.type, msg.data);
+                        if (messages && messages.length > 0) {
+                            console.log(`Patient: Received ${messages.length} signaling messages`);
+                            messages.forEach((msg, index) => {
+                                console.log(`Patient: Processing message ${index + 1}:`, msg);
                                 handleSignalingMessage(msg.type, msg.data);
                             });
-                        } else {
-                            // Log when no messages are received for debugging
-                            if (Math.random() < 0.1) { // Only log occasionally to avoid spam
-                                console.log('📭 No signaling messages received in this poll');
-                            }
                         }
                     })
                     .catch(error => {
-                        console.error('❌ Polling error:', error);
-                        // Continue polling even if there's an error
+                        console.error('Patient: Polling error:', error);
+                        // Don't show error to user for polling failures, just log them
                     });
             }
 
-            function checkRemotePeerResponse() {
-                if (!currentAppointmentId || !isCallActive) return;
+            function showConnectionStatus(message, type = 'info') {
+                const statusDiv = document.getElementById('connectionStatus');
+                const statusText = document.getElementById('statusText');
 
-                console.log('🔍 Checking if remote peer is responding...');
+                if (statusDiv && statusText) {
+                    statusText.textContent = message;
 
-                // Send a ping via data channel if available
-                if (dataChannel && dataChannel.readyState === 'open') {
-                    const pingMessage = {
-                        type: 'ping',
-                        timestamp: Date.now(),
-                        id: Math.random().toString(36).substr(2, 9)
-                    };
-
-                    console.log('🏓 Sending ping via data channel:', pingMessage);
-                    dataChannel.send(JSON.stringify(pingMessage));
-
-                    // Set a timeout to check for pong response
-                    setTimeout(() => {
-                        if (isCallActive) {
-                            console.log('⚠️ No pong response received - remote peer may not be responding');
-                        }
-                    }, 5000);
-                } else {
-                    console.log('📡 Data channel not available for ping test');
-                }
-            }
-
-            function verifyVideoElementsDisplay() {
-                console.log('=== Video Elements Display Check ===');
-
-                const remoteVideo = document.getElementById('remoteVideo');
-                const localVideo = document.getElementById('localVideo');
-                const callScreen = document.getElementById('callScreen');
-
-                console.log('Call screen active:', callScreen ? callScreen.classList.contains('active') : 'Not found');
-                console.log('Call screen display:', callScreen ? getComputedStyle(callScreen).display : 'Not found');
-
-                if (remoteVideo) {
-                    const rect = remoteVideo.getBoundingClientRect();
-                    const computedStyle = getComputedStyle(remoteVideo);
-
-                    console.log('Remote Video Display:', {
-                        boundingRect: {
-                            top: rect.top,
-                            left: rect.left,
-                            width: rect.width,
-                            height: rect.height
-                        },
-                        computedStyle: {
-                            display: computedStyle.display,
-                            visibility: computedStyle.visibility,
-                            opacity: computedStyle.opacity,
-                            width: computedStyle.width,
-                            height: computedStyle.height,
-                            position: computedStyle.position
-                        },
-                        isVisible: rect.width > 0 && rect.height > 0 && computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden'
-                    });
-                }
-
-                if (localVideo) {
-                    const rect = localVideo.getBoundingClientRect();
-                    const computedStyle = getComputedStyle(localVideo);
-
-                    console.log('Local Video Display:', {
-                        boundingRect: {
-                            top: rect.top,
-                            left: rect.left,
-                            width: rect.width,
-                            height: rect.height
-                        },
-                        computedStyle: {
-                            display: computedStyle.display,
-                            visibility: computedStyle.visibility,
-                            opacity: computedStyle.opacity,
-                            width: computedStyle.width,
-                            height: computedStyle.height,
-                            position: computedStyle.position
-                        },
-                        isVisible: rect.width > 0 && rect.height > 0 && computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden'
-                    });
-                }
-
-                console.log('====================================');
-            }
-
-            function runNetworkDiagnostics() {
-                console.log('=== Network Diagnostics ===');
-
-                // Test STUN server connectivity
-                const stunServers = [
-                    'stun:stun.l.google.com:19302',
-                    'stun:stun1.l.google.com:19302',
-                    'stun:stun.nextcloud.com:443'
-                ];
-
-                stunServers.forEach(server => {
-                    console.log(`Testing STUN server: ${server}`);
-                });
-
-                // Check network interfaces
-                if (typeof window !== 'undefined' && window.networkInformation) {
-                    console.log('Network Information:', {
-                        type: window.networkInformation.type,
-                        effectiveType: window.networkInformation.effectiveType,
-                        downlink: window.networkInformation.downlink,
-                        rtt: window.networkInformation.rtt
-                    });
-                }
-
-                // Check WebRTC support
-                console.log('WebRTC Support:', {
-                    mediaDevices: !!navigator.mediaDevices,
-                    getUserMedia: !!navigator.mediaDevices?.getUserMedia,
-                    RTCPeerConnection: !!window.RTCPeerConnection,
-                    RTCDataChannel: !!window.RTCDataChannel
-                });
-
-                // Test local IP discovery
-                detectLocalIP().then(ip => {
-                    console.log('Local IP detected:', ip);
-                }).catch(error => {
-                    console.log('Could not detect local IP:', error.message);
-                });
-
-                console.log('==========================');
-            }
-
-            function detectLocalIP() {
-                return new Promise((resolve, reject) => {
-                    const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-
-                    pc.onicecandidate = event => {
-                        if (event.candidate) {
-                            const ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
-                            const match = event.candidate.candidate.match(ipRegex);
-                            if (match) {
-                                pc.close();
-                                resolve(match[1]);
-                            }
-                        }
-                    };
-
-                    pc.createDataChannel('');
-                    pc.createOffer().then(offer => pc.setLocalDescription(offer)).catch(reject);
-                });
-            }
-
-            function startConnectionQualityMonitoring() {
-                if (networkStatsInterval) {
-                    clearInterval(networkStatsInterval);
-                }
-
-                networkStatsInterval = setInterval(() => {
-                    if (peerConnection && peerConnection.connectionState === 'connected') {
-                        peerConnection.getStats().then(stats => {
-                            let totalPacketsLost = 0;
-                            let totalPacketsReceived = 0;
-                            let totalBytesReceived = 0;
-
-                            stats.forEach(report => {
-                                if (report.type === 'inbound-rtp') {
-                                    totalPacketsLost += report.packetsLost || 0;
-                                    totalPacketsReceived += report.packetsReceived || 0;
-                                    totalBytesReceived += report.bytesReceived || 0;
-                                }
-                            });
-
-                            // Calculate packet loss percentage
-                            const packetLossPercentage = totalPacketsReceived > 0 ?
-                                (totalPacketsLost / (totalPacketsLost + totalPacketsReceived)) * 100 : 0;
-
-                            console.log('Connection Quality:', {
-                                packetsLost: totalPacketsLost,
-                                packetsReceived: totalPacketsReceived,
-                                bytesReceived: totalBytesReceived,
-                                packetLossPercentage: packetLossPercentage.toFixed(2) + '%'
-                            });
-
-                            // Adapt to poor connection quality
-                            if (packetLossPercentage > 10) {
-                                console.warn('High packet loss detected, considering connection quality adaptation');
-                                adaptToNetworkConditions(packetLossPercentage);
-                            }
-
-                            connectionQuality = {
-                                packetsLost: totalPacketsLost,
-                                packetsReceived: totalPacketsReceived,
-                                bytesReceived: totalBytesReceived
-                            };
-                        }).catch(error => {
-                            console.error('Error getting connection stats:', error);
-                        });
+                    // Set color based on type
+                    switch (type) {
+                        case 'success':
+                            statusDiv.style.background = 'rgba(34, 197, 94, 0.2)';
+                            statusDiv.style.color = '#16a34a';
+                            break;
+                        case 'error':
+                            statusDiv.style.background = 'rgba(239, 68, 68, 0.2)';
+                            statusDiv.style.color = '#ef4444';
+                            break;
+                        case 'warning':
+                            statusDiv.style.background = 'rgba(245, 158, 11, 0.2)';
+                            statusDiv.style.color = '#f59e0b';
+                            break;
+                        default:
+                            statusDiv.style.background = 'rgba(0, 0, 0, 0.1)';
+                            statusDiv.style.color = 'inherit';
                     }
-                }, 2000); // Check every 2 seconds
-            }
 
-            function adaptToNetworkConditions(packetLossPercentage) {
-                console.log(`Adapting to network conditions: ${packetLossPercentage.toFixed(2)}% packet loss`);
-
-                // If packet loss is high, we could potentially:
-                // 1. Reduce video quality
-                // 2. Disable video and use audio only
-                // 3. Request a connection restart with different settings
-
-                if (packetLossPercentage > 25) {
-                    console.warn('Very high packet loss - consider audio-only mode');
-                    // Could implement video quality reduction here
+                    statusDiv.style.display = 'block';
                 }
             }
 
-            function stopConnectionQualityMonitoring() {
-                if (networkStatsInterval) {
-                    clearInterval(networkStatsInterval);
-                    networkStatsInterval = null;
+            function hideConnectionStatus() {
+                const statusDiv = document.getElementById('connectionStatus');
+                if (statusDiv) {
+                    statusDiv.style.display = 'none';
                 }
             }
 
-            function debugVideoElements() {
-                console.log('=== Video Elements Debug Info ===');
+            function showVideoStatus(message, type = 'info') {
+                const statusDiv = document.getElementById('videoStatus');
+                const statusText = document.getElementById('videoStatusText');
 
-                const remoteVideo = document.getElementById('remoteVideo');
-                const localVideo = document.getElementById('localVideo');
+                if (statusDiv && statusText) {
+                    statusText.textContent = message;
 
-                if (remoteVideo) {
-                    console.log('Remote Video Element:', {
-                        id: remoteVideo.id,
-                        srcObject: remoteVideo.srcObject ? 'Present' : 'Null',
-                        readyState: remoteVideo.readyState,
-                        networkState: remoteVideo.networkState,
-                        videoWidth: remoteVideo.videoWidth,
-                        videoHeight: remoteVideo.videoHeight,
-                        paused: remoteVideo.paused,
-                        ended: remoteVideo.ended,
-                        style: {
-                            display: remoteVideo.style.display,
-                            visibility: remoteVideo.style.visibility,
-                            width: remoteVideo.style.width,
-                            height: remoteVideo.style.height
-                        }
-                    });
-
-                    if (remoteVideo.srcObject) {
-                        console.log('Remote Video Stream Tracks:', remoteVideo.srcObject.getTracks().map(t => ({
-                            kind: t.kind,
-                            id: t.id,
-                            enabled: t.enabled,
-                            readyState: t.readyState,
-                            settings: t.getSettings()
-                        })));
+                    // Set color based on type
+                    switch (type) {
+                        case 'success':
+                            statusDiv.style.color = '#16a34a';
+                            break;
+                        case 'error':
+                            statusDiv.style.color = '#ef4444';
+                            break;
+                        case 'warning':
+                            statusDiv.style.color = '#f59e0b';
+                            break;
+                        default:
+                            statusDiv.style.color = 'inherit';
                     }
+
+                    statusDiv.style.display = 'block';
                 }
-
-                if (localVideo) {
-                    console.log('Local Video Element:', {
-                        id: localVideo.id,
-                        srcObject: localVideo.srcObject ? 'Present' : 'Null',
-                        readyState: localVideo.readyState,
-                        networkState: localVideo.networkState,
-                        videoWidth: localVideo.videoWidth,
-                        videoHeight: localVideo.videoHeight,
-                        paused: localVideo.paused,
-                        ended: localVideo.ended,
-                        muted: localVideo.muted,
-                        style: {
-                            display: localVideo.style.display,
-                            visibility: localVideo.style.visibility,
-                            width: localVideo.style.width,
-                            height: localVideo.style.height
-                        }
-                    });
-
-                    if (localVideo.srcObject) {
-                        console.log('Local Video Stream Tracks:', localVideo.srcObject.getTracks().map(t => ({
-                            kind: t.kind,
-                            id: t.id,
-                            enabled: t.enabled,
-                            readyState: t.readyState,
-                            settings: t.getSettings()
-                        })));
-                    }
-                }
-
-                console.log('================================');
             }
 
-            function debugConnectionInfo() {
-                if (peerConnection) {
-                    console.log('=== WebRTC Connection Debug Info ===');
-                    console.log('Signaling State:', peerConnection.signalingState);
-                    console.log('Connection State:', peerConnection.connectionState);
-                    console.log('ICE Connection State:', peerConnection.iceConnectionState);
-                    console.log('ICE Gathering State:', peerConnection.iceGatheringState);
-
-                    // Log local tracks
-                    const senders = peerConnection.getSenders();
-                    console.log('Senders:', senders.map(s => ({
-                        track: s.track ? { kind: s.track.kind, id: s.track.id, enabled: s.track.enabled } : null,
-                        transport: s.transport ? 'connected' : 'disconnected'
-                    })));
-
-                    // Log remote tracks
-                    const receivers = peerConnection.getReceivers();
-                    console.log('Receivers:', receivers.map(r => ({
-                        track: r.track ? { kind: r.track.kind, id: r.track.id, enabled: r.track.enabled } : null
-                    })));
-
-                    // Enhanced ICE candidate logging
-                    peerConnection.getStats().then(stats => {
-                        const candidates = [];
-                        const pairs = [];
-
-                        stats.forEach(report => {
-                            if (report.type === 'local-candidate') {
-                                candidates.push({
-                                    type: 'local',
-                                    id: report.id,
-                                    candidateType: report.candidateType,
-                                    protocol: report.protocol,
-                                    address: report.address,
-                                    port: report.port
-                                });
-                            } else if (report.type === 'remote-candidate') {
-                                candidates.push({
-                                    type: 'remote',
-                                    id: report.id,
-                                    candidateType: report.candidateType,
-                                    protocol: report.protocol,
-                                    address: report.address,
-                                    port: report.port
-                                });
-                            } else if (report.type === 'candidate-pair') {
-                                pairs.push({
-                                    id: report.id,
-                                    state: report.state,
-                                    nominated: report.nominated,
-                                    localCandidateId: report.localCandidateId,
-                                    remoteCandidateId: report.remoteCandidateId,
-                                    priority: report.priority
-                                });
-                            }
-                        });
-
-                        console.log('Local Candidates:', candidates.filter(c => c.type === 'local'));
-                        console.log('Remote Candidates:', candidates.filter(c => c.type === 'remote'));
-                        console.log('Candidate Pairs:', pairs);
-
-                        // Find active pair
-                        const activePair = pairs.find(p => p.state === 'succeeded' && p.nominated);
-                        if (activePair) {
-                            console.log('Active Candidate Pair:', activePair);
-                        }
-                    }).catch(error => {
-                        console.error('Error getting stats:', error);
-                    });
-
-                    console.log('====================================');
+            function hideVideoStatus() {
+                const statusDiv = document.getElementById('videoStatus');
+                if (statusDiv) {
+                    statusDiv.style.display = 'none';
                 }
-
-                // Also debug video elements
-                debugVideoElements();
             }
 
             function toggleAudio() {
@@ -2568,24 +2512,11 @@
 
                     // Stop local media tracks
                     if (localStream) {
-                        console.log('Stopping local stream tracks...');
                         localStream.getTracks().forEach(track => {
-                            console.log(`Stopping ${track.kind} track:`, track.id);
+                            console.log('Stopping track:', track.kind);
                             track.stop();
                         });
                         localStream = null;
-                    }
-
-                    // Stop any remaining tracks from peer connection senders
-                    if (peerConnection) {
-                        const senders = peerConnection.getSenders();
-                        console.log(`Stopping ${senders.length} peer connection senders...`);
-                        senders.forEach(sender => {
-                            if (sender.track) {
-                                console.log(`Stopping sender track:`, sender.track.kind);
-                                sender.track.stop();
-                            }
-                        });
                     }
 
                     // Close peer connection
@@ -2621,13 +2552,10 @@
                         messages.innerHTML = '';
                     }
 
-                    // Reset connection status
-                    updateConnectionStatus('disconnected');
-
-                    // Clear connection timeout
-                    if (connectionTimeout) {
-                        clearTimeout(connectionTimeout);
-                        connectionTimeout = null;
+                    const startCallBtn = document.getElementById('startCallBtn');
+                    if (startCallBtn) {
+                        startCallBtn.disabled = false;
+                        startCallBtn.textContent = 'Start Call';
                     }
 
                     // Reset state
@@ -2635,14 +2563,18 @@
                     isCallActive = false;
                     iceCandidateQueue = [];
                     offerQueue = [];
-                    signalingRetryCount = 0;
-                    remoteStreamId = null;
+                    isInitiator = false;
+                    retryCount = 0;
+                    retryDelay = 1000;
 
-                    // Cancel any ongoing video play promises
-                    videoPlayPromises.clear();
+                    // Hide connection status when call ends
+                    hideConnectionStatus();
 
-                    // Stop connection quality monitoring
-                    stopConnectionQualityMonitoring();
+                    // Reset UI - reuse the existing variable from earlier in the function
+                    if (startCallBtn) {
+                        startCallBtn.disabled = false;
+                        startCallBtn.textContent = 'Start Call';
+                    }
 
                     console.log('Call ended successfully');
                 } catch (error) {
@@ -2669,276 +2601,32 @@
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }
 
-            function updateVideoStatus(videoElement, status) {
-                const statusElement = document.getElementById(`${videoElement.id}Status`);
-                if (statusElement) {
-                    statusElement.textContent = status;
-                    statusElement.className = `video-status ${status.toLowerCase().replace(' ', '-')}`;
-                }
-            }
-
-            function setupVideoMonitoring() {
-                const remoteVideo = document.getElementById('remoteVideo');
-                const localVideo = document.getElementById('localVideo');
-
-                if (remoteVideo) {
-                    remoteVideo.addEventListener('loadedmetadata', () => {
-                        console.log('Remote video loaded metadata:', {
-                            videoWidth: remoteVideo.videoWidth,
-                            videoHeight: remoteVideo.videoHeight,
-                            readyState: remoteVideo.readyState
-                        });
-                        updateVideoStatus(remoteVideo, 'Stream Active');
-                    });
-
-                    remoteVideo.addEventListener('loadstart', () => {
-                        console.log('Remote video load started');
-                        updateVideoStatus(remoteVideo, 'Loading...');
-                    });
-
-                    remoteVideo.addEventListener('canplay', () => {
-                        console.log('Remote video can play');
-                        updateVideoStatus(remoteVideo, 'Ready');
-                    });
-
-                    remoteVideo.addEventListener('play', () => {
-                        console.log('Remote video playing');
-                        updateVideoStatus(remoteVideo, 'Playing');
-                    });
-
-                    remoteVideo.addEventListener('pause', () => {
-                        console.log('Remote video paused');
-                        updateVideoStatus(remoteVideo, 'Paused');
-                    });
-                }
-
-                if (localVideo) {
-                    localVideo.addEventListener('loadedmetadata', () => {
-                        console.log('Local video loaded metadata:', {
-                            videoWidth: localVideo.videoWidth,
-                            videoHeight: localVideo.videoHeight,
-                            readyState: localVideo.readyState
-                        });
-                        updateVideoStatus(localVideo, 'Stream Active');
-                    });
-
-                    localVideo.addEventListener('loadstart', () => {
-                        console.log('Local video load started');
-                        updateVideoStatus(localVideo, 'Loading...');
-                    });
-
-                    localVideo.addEventListener('canplay', () => {
-                        console.log('Local video can play');
-                        updateVideoStatus(localVideo, 'Ready');
-                    });
-
-                    localVideo.addEventListener('play', () => {
-                        console.log('Local video playing');
-                        updateVideoStatus(localVideo, 'Playing');
-                    });
-
-                    localVideo.addEventListener('pause', () => {
-                        console.log('Local video paused');
-                        updateVideoStatus(localVideo, 'Paused');
-                    });
-                }
-            }
-
-            function showVideoPlayButton(videoElement) {
-                // Remove existing play button if any
-                const existingButton = videoElement.parentNode.querySelector('.video-play-button');
-                if (existingButton) {
-                    existingButton.remove();
-                }
-
-                // Create play button overlay
-                const playButton = document.createElement('button');
-                playButton.className = 'video-play-button';
-                playButton.innerHTML = '▶';
-                playButton.style.cssText = `
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: rgba(0,0,0,0.7);
-                    color: white;
-                    border: none;
-                    border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
-                    font-size: 24px;
-                    cursor: pointer;
-                    z-index: 1000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                `;
-
-                playButton.addEventListener('click', async () => {
-                    try {
-                        await playVideoElement(videoElement);
-                        playButton.remove();
-                        console.log('Video started manually');
-                    } catch (e) {
-                        console.error('Manual video play failed:', e);
-                    }
-                });
-
-                videoElement.parentNode.style.position = 'relative';
-                videoElement.parentNode.appendChild(playButton);
-            }
-
-            async function playVideoElement(videoElement) {
-                const elementId = videoElement.id;
-
-                // Cancel any existing play promise for this element
-                if (videoPlayPromises.has(elementId)) {
-                    console.log(`Cancelling existing play promise for ${elementId}`);
-                    // The existing promise will be rejected, but we continue with the new one
-                }
-
-                // Create new play promise
-                const playPromise = (async () => {
-                    try {
-                        // Wait for video to be ready
-                        if (videoElement.readyState === 0) {
-                            console.log(`Waiting for ${elementId} to load...`);
-                            await new Promise((resolve, reject) => {
-                                const timeout = setTimeout(() => {
-                                    console.warn('Video load timeout - continuing without video');
-                                    // Instead of rejecting, resolve to allow connection without video
-                                    resolve();
-                                }, 15000); // Increased to 15 seconds with fallback
-
-                                videoElement.addEventListener('loadedmetadata', () => {
-                                    clearTimeout(timeout);
-                                    resolve();
-                                }, { once: true });
-
-                                videoElement.addEventListener('error', (e) => {
-                                    clearTimeout(timeout);
-                                    reject(new Error(`Video load error: ${e.message}`));
-                                }, { once: true });
-
-                                // Also handle case where video is already loaded
-                                if (videoElement.readyState >= 1) {
-                                    clearTimeout(timeout);
-                                    resolve();
-                                }
-                            });
-                        }
-
-                        // Check if video is already playing
-                        if (!videoElement.paused && !videoElement.ended) {
-                            console.log(`${elementId} is already playing`);
-                            return;
-                        }
-
-                        console.log(`Attempting to play ${elementId}...`);
-                        await videoElement.play();
-                        console.log(`${elementId} playing successfully`);
-
-                    } catch (error) {
-                        console.error(`Error playing ${elementId}:`, error);
-
-                        if (error.name === 'AbortError') {
-                            console.log(`Play aborted for ${elementId}, retrying once...`);
-                            // Wait a bit and try again
-                            await new Promise(resolve => setTimeout(resolve, 500));
-                            await videoElement.play();
-                        } else if (error.name === 'NotAllowedError') {
-                            console.log(`Autoplay blocked for ${elementId}`);
-                            throw error; // Let caller handle this
-                        } else {
-                            throw error;
-                        }
-                    }
-                })();
-
-                // Track the promise
-                videoPlayPromises.set(elementId, playPromise);
-
-                try {
-                    await playPromise;
-                } finally {
-                    videoPlayPromises.delete(elementId);
-                }
-            }
-
-            function updateConnectionStatus(status) {
-                connectionStatus = status;
-                const statusIndicator = document.getElementById('connectionStatus');
-                const startCallBtn = document.getElementById('startCallBtn');
-
-                if (statusIndicator) {
-                    statusIndicator.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-                    statusIndicator.className = `connection-status ${status}`;
-                }
-
-                if (startCallBtn) {
-                    switch (status) {
-                        case 'connecting':
-                            startCallBtn.textContent = 'Connecting...';
-                            startCallBtn.disabled = true;
-                            break;
-                        case 'connected':
-                            startCallBtn.textContent = 'Connected';
-                            startCallBtn.disabled = true;
-                            break;
-                        case 'failed':
-                            startCallBtn.textContent = 'Connection Failed';
-                            startCallBtn.disabled = false;
-                            break;
-                        case 'disconnected':
-                            startCallBtn.textContent = 'Start Call';
-                            startCallBtn.disabled = false;
-                            break;
-                    }
-                }
-            }
-
             function handleConnectionFailure() {
-                console.error('❌ Connection failure detected');
-                debugConnectionInfo();
-                runNetworkDiagnostics();
-                updateConnectionStatus('failed');
+                console.error('Patient: Connection failure detected');
 
-                // Don't show modal if we're already trying to reconnect
-                if (!isCallActive) {
-                    return;
+                // Get detailed error information
+                let errorDetails = 'Unknown error occurred';
+                if (peerConnection) {
+                    errorDetails = `Connection State: ${peerConnection.connectionState}, Signaling State: ${peerConnection.signalingState}, ICE State: ${peerConnection.iceConnectionState}`;
+                    console.error('Patient: Detailed connection info:', {
+                        connectionState: peerConnection.connectionState,
+                        signalingState: peerConnection.signalingState,
+                        iceConnectionState: peerConnection.iceConnectionState,
+                        iceGatheringState: peerConnection.iceGatheringState
+                    });
                 }
 
-                // Check if we have at least audio connection before giving up
-                if (hasAudioConnection) {
-                    console.log('🔊 Audio connection established, but video may not be working');
-                    showConfirmationModal('Partial Connection',
-                        'Audio connection established, but video connection failed. You may be able to communicate via audio only.');
-                    return;
-                }
+                // Show detailed error message
+                const errorMessage = `Video call connection failed.
+Details: ${errorDetails}
 
-                // Try to restart ICE gathering before giving up
-                if (peerConnection && typeof peerConnection.restartIce === 'function') {
-                    console.log('🔄 Attempting ICE restart...');
-                    try {
-                        const restartPromise = peerConnection.restartIce();
-                        if (restartPromise && typeof restartPromise.then === 'function') {
-                            restartPromise.then(() => {
-                                console.log('✅ ICE restart initiated');
-                            }).catch(error => {
-                                console.error('❌ ICE restart failed:', error);
-                            });
-                        } else {
-                            console.log('✅ ICE restart completed (synchronous)');
-                        }
-                    } catch (error) {
-                        console.error('❌ ICE restart error:', error);
-                    }
-                } else {
-                    console.log('⚠️ ICE restart not available or peer connection not ready');
-                }
+Possible solutions:
+• Check your internet connection
+• Allow camera and microphone permissions
+• Try refreshing the page
+• Contact support if the issue persists`;
 
-                showConfirmationModal('Connection Failed',
-                    'The video call connection could not be established. This might be due to network restrictions or firewall settings. Please try again or check your network configuration.');
+                showConfirmationModal('Connection Failed', errorMessage);
 
                 // Reset call state
                 endCall();
@@ -2947,43 +2635,20 @@
             function handlePeerDisconnection() {
                 console.log('Peer disconnected, attempting to reconnect...');
 
-                // Don't attempt reconnection if call is not active or we're already ending the call
-                if (!isCallActive) {
-                    return;
+                // Show reconnection status to user
+                const startCallBtn = document.getElementById('startCallBtn');
+                if (startCallBtn) {
+                    startCallBtn.textContent = 'Reconnecting...';
+                    startCallBtn.disabled = true;
                 }
 
-                // Show reconnection status to user
-                updateConnectionStatus('connecting');
-
-                // Attempt to reconnect with exponential backoff
-                let retryCount = 0;
-                const maxRetries = 3;
-                const attemptReconnection = () => {
-                    if (!isCallActive || !peerConnection) {
-                        return;
+                // Attempt to reconnect after a short delay
+                setTimeout(() => {
+                    if (isCallActive && peerConnection) {
+                        console.log('Attempting to reconnect...');
+                        startCall();
                     }
-
-                    retryCount++;
-                    console.log(`Reconnection attempt ${retryCount}/${maxRetries}...`);
-
-                    if (retryCount <= maxRetries) {
-                        startCall().catch(error => {
-                            console.error(`Reconnection attempt ${retryCount} failed:`, error);
-                            if (retryCount < maxRetries) {
-                                const delay = Math.min(1000 * Math.pow(2, retryCount - 1), 5000); // Exponential backoff, max 5s
-                                setTimeout(attemptReconnection, delay);
-                            } else {
-                                console.error('Max reconnection attempts reached');
-                                showConfirmationModal('Connection Lost',
-                                    'Unable to reconnect after multiple attempts. Please try starting a new call.');
-                                endCall();
-                            }
-                        });
-                    }
-                };
-
-                // Initial reconnection attempt after short delay
-                setTimeout(attemptReconnection, 1000);
+                }, 2000);
             }
 
             function processQueuedOffers() {
@@ -3055,88 +2720,299 @@
                 // Poll for signaling messages
                 setInterval(pollSignaling, 1000);
 
-                // Debug connection info periodically during calls
-                setInterval(() => {
-                    if (isCallActive && peerConnection) {
-                        debugConnectionInfo();
-                        // Periodically check if remote peer is responding
-                        checkRemotePeerResponse();
+                // Test function for debugging WebRTC issues
+                function testWebRTCConnection() {
+                    console.log('Patient: Testing WebRTC connection...');
+
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        console.error('Patient: WebRTC not supported');
+                        showConnectionStatus('WebRTC not supported in this browser', 'error');
+                        return false;
                     }
-                }, 10000); // Increased interval and added peer response check
 
-                // Add diagnostic buttons for troubleshooting (only in development)
-                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                    const buttonContainer = document.createElement('div');
-                    buttonContainer.style.position = 'fixed';
-                    buttonContainer.style.top = '10px';
-                    buttonContainer.style.right = '10px';
-                    buttonContainer.style.zIndex = '9999';
-                    buttonContainer.style.display = 'flex';
-                    buttonContainer.style.flexDirection = 'column';
-                    buttonContainer.style.gap = '5px';
+                    // Test media device access
+                    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                        .then(stream => {
+                            console.log('Patient: Media device test successful');
+                            stream.getTracks().forEach(track => track.stop()); // Stop test stream
+                            showConnectionStatus('WebRTC test successful - ready for calls', 'success');
+                            return true;
+                        })
+                        .catch(error => {
+                            console.error('Patient: Media device test failed:', error);
+                            showConnectionStatus('Media device test failed: ' + error.message, 'error');
+                            return false;
+                        });
 
-                    // WebRTC Test Button
-                    const testButton = document.createElement('button');
-                    testButton.textContent = 'Test WebRTC';
-                    testButton.className = 'btn';
-                    testButton.style.fontSize = '10px';
-                    testButton.style.padding = '5px 10px';
-                    testButton.onclick = () => {
-                        console.log('=== WebRTC Test ===');
-                        console.log('Local stream:', localStream ? 'Available' : 'Not available');
-                        console.log('Peer connection:', peerConnection ? 'Available' : 'Not available');
-                        console.log('Call active:', isCallActive);
-                        console.log('WebRTC initialized:', isWebRTCInitialized);
-                        debugConnectionInfo();
+                    return true;
+                }
 
-                        if (localStream) {
-                            console.log('Local stream tracks:', localStream.getTracks().map(t => ({
-                                kind: t.kind,
-                                id: t.id,
-                                enabled: t.enabled,
-                                state: t.readyState
-                            })));
-                        }
-                    };
+                // Add test button event listener for debugging
+                document.addEventListener('keydown', function(e) {
+                    // Press Ctrl+Shift+T to test WebRTC
+                    if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+                        testWebRTCConnection();
+                    }
+                });
+            }
 
-                    // Video Display Check Button
-                    const videoCheckButton = document.createElement('button');
-                    videoCheckButton.textContent = 'Check Video';
-                    videoCheckButton.className = 'btn';
-                    videoCheckButton.style.fontSize = '10px';
-                    videoCheckButton.style.padding = '5px 10px';
-                    videoCheckButton.style.backgroundColor = '#8b5cf6';
-                    videoCheckButton.onclick = () => {
-                        verifyVideoElementsDisplay();
-                    };
+            // Medicine Reminder Functions
+            async function checkMedicineReminders() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/v1/medicine-reminders`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: user.patientId,
+                            action: 'get'
+                        })
+                    });
 
-                    // Network Diagnostics Button
-                    const networkButton = document.createElement('button');
-                    networkButton.textContent = 'Network Diag';
-                    networkButton.className = 'btn';
-                    networkButton.style.fontSize = '10px';
-                    networkButton.style.padding = '5px 10px';
-                    networkButton.style.backgroundColor = '#f59e0b';
-                    networkButton.onclick = () => {
-                        runNetworkDiagnostics();
-                    };
+                    const data = await response.json();
+                    if (data.success) {
+                        updateRemindersDisplay(data.reminders, data.pending_alerts);
+                    }
+                } catch (error) {
+                    console.error('Medicine reminders check error:', error);
+                }
+            }
 
-                    // Connection Info Button
-                    const connButton = document.createElement('button');
-                    connButton.textContent = 'Conn Info';
-                    connButton.className = 'btn';
-                    connButton.style.fontSize = '10px';
-                    connButton.style.padding = '5px 10px';
-                    connButton.style.backgroundColor = '#3b82f6';
-                    connButton.onclick = () => {
-                        debugConnectionInfo();
-                    };
+            function updateRemindersDisplay(reminders, alerts) {
+                // Update home screen counter
+                const pendingEl = document.getElementById('pendingReminders');
+                if (pendingEl) {
+                    pendingEl.textContent = `${alerts.length} Pending`;
+                }
 
-                    buttonContainer.appendChild(testButton);
-                    buttonContainer.appendChild(networkButton);
-                    buttonContainer.appendChild(connButton);
-                    buttonContainer.appendChild(videoCheckButton);
-                    document.body.appendChild(buttonContainer);
+                // Show alerts in chat if any
+                if (alerts.length > 0 && document.getElementById('chatWindow')) {
+                    showMedicineAlerts(alerts);
+                }
+            }
+
+            function showMedicineAlerts(alerts) {
+                const chatWindow = document.getElementById('chatWindow');
+                if (!chatWindow) return;
+
+                alerts.forEach(alert => {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'medicine-reminder-card card';
+                    alertDiv.innerHTML = `
+                        <div class="reminder-item">
+                            <div class="reminder-info">
+                                <h4>⏰ Medicine Reminder</h4>
+                                <p><strong>${alert.medicine_name}</strong> - ${alert.dosage}</p>
+                                <p>Time: ${alert.time}</p>
+                            </div>
+                            <div class="reminder-actions">
+                                <button class="btn-taken" onclick="markMedicineTaken('${alert.medicine_name}')">Taken</button>
+                                <button class="btn-skip" onclick="skipMedicine('${alert.medicine_name}')">Skip</button>
+                            </div>
+                        </div>
+                    `;
+                    chatWindow.appendChild(alertDiv);
+                });
+
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+
+            async function markMedicineTaken(medicineName) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/v1/medicine-reminders`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: user.patientId,
+                            action: 'update_adherence',
+                            medicine_name: medicineName,
+                            taken_time: new Date().toTimeString().slice(0, 5)
+                        })
+                    });
+
+                    if (response.ok) {
+                        // Remove reminder from UI
+                        await checkMedicineReminders();
+                        showConfirmationModal('Success', 'Medicine marked as taken!');
+                    }
+                } catch (error) {
+                    console.error('Mark medicine taken error:', error);
+                }
+            }
+
+            function skipMedicine(medicineName) {
+                // Just refresh reminders
+                checkMedicineReminders();
+            }
+
+            async function loadPrescriptionReminders() {
+                try {
+                    // Get user's prescription summary
+                    const response = await fetch(`${API_BASE_URL}/v1/prescription-summary`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: user.patientId
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.success && data.prescription_summary.medications) {
+                        showPrescriptionBasedReminders(data.prescription_summary);
+                    }
+                } catch (error) {
+                    console.error('Load prescription reminders error:', error);
+                }
+            }
+
+            function showAllPrescriptionSources() {
+                const chatWindow = document.getElementById('chatWindow');
+                if (!chatWindow) return;
+
+                // Show prescription sources summary
+                const sourcesDiv = document.createElement('div');
+                sourcesDiv.className = 'medicine-reminder-card card';
+                sourcesDiv.innerHTML = `
+                    <h4>📋 Prescription Summary</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                        <div style="background: rgba(0,123,255,0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #007bff; margin: 0 0 0.5rem 0;">👨‍⚕️ Doctor Prescriptions</h5>
+                            <p style="margin: 0; font-size: 0.9rem;">From completed appointments</p>
+                            <p style="margin: 0; font-size: 0.8rem; opacity: 0.8;">Auto-generates medicine reminders</p>
+                        </div>
+                        <div style="background: rgba(255,193,7,0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #ffc107; margin: 0 0 0.5rem 0;">📱 Patient Uploads</h5>
+                            <p style="margin: 0; font-size: 0.9rem;">Scanned prescription images</p>
+                            <p style="margin: 0; font-size: 0.8rem; opacity: 0.8;">AI extracts medicine details</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; opacity: 0.8; text-align: center;">
+                        💡 Both sources automatically create medicine reminders for better health compliance.
+                    </p>
+                `;
+                chatWindow.appendChild(sourcesDiv);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+
+            function showPrescriptionBasedReminders(prescriptionData) {
+                const chatWindow = document.getElementById('chatWindow');
+                if (!chatWindow) return;
+
+                const medications = prescriptionData.medications;
+                if (medications && medications.length > 0) {
+                    const reminderDiv = document.createElement('div');
+                    reminderDiv.className = 'medicine-reminder-card card';
+                    reminderDiv.innerHTML = `
+                        <h4>💊 Prescription-Based Medicine Reminders</h4>
+                        <p><strong>Doctor:</strong> ${prescriptionData.doctor_name || 'Doctor'}</p>
+                        <p><strong>Medications Found:</strong> ${medications.length}</p>
+                        <div style="margin-top: 1rem;">
+                            ${medications.map(med => `
+                                <div class="reminder-item">
+                                    <div class="reminder-info">
+                                        <strong>${med.name}</strong> - ${med.dosage || 'As prescribed'}
+                                        <br><small>${med.frequency || 'Timing not specified'}</small>
+                                    </div>
+                                    <div class="reminder-actions">
+                                        <button class="btn-taken" onclick="createReminderFromPrescription('${med.name}', '${med.dosage || ''}', '${med.frequency || ''}')">Set Reminder</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                            💡 These reminders are auto-generated from your prescriptions. Click "Set Reminder" to schedule daily alerts.
+                        </p>
+                    `;
+                    chatWindow.appendChild(reminderDiv);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                }
+            }
+
+            async function createReminderFromPrescription(medicineName, dosage, frequency) {
+                // Pre-fill the reminder form with prescription data
+                document.getElementById('medicineName').value = medicineName;
+                document.getElementById('medicineDosage').value = dosage;
+                document.getElementById('medicineInstructions').value = frequency;
+
+                // Show the reminder modal
+                document.getElementById('medicineReminderModal').classList.add('active');
+
+                // Show confirmation in chat
+                const chatWindow = document.getElementById('chatWindow');
+                if (chatWindow) {
+                    const confirmDiv = document.createElement('div');
+                    confirmDiv.className = 'chat-message bot-message';
+                    confirmDiv.textContent = `✅ I've pre-filled the reminder form with ${medicineName} details from your prescription. Please set the timing and save.`;
+                    chatWindow.appendChild(confirmDiv);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                }
+            }
+
+            async function saveMedicineReminder() {
+                const medicineName = document.getElementById('medicineName').value.trim();
+                const dosage = document.getElementById('medicineDosage').value.trim();
+                const times = document.getElementById('medicineTimes').value.trim();
+                const duration = document.getElementById('medicineDuration').value;
+                const instructions = document.getElementById('medicineInstructions').value.trim();
+
+                if (!medicineName || !dosage || !times) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/v1/medicine-reminders`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: user.patientId,
+                            action: 'add',
+                            medicine_name: medicineName,
+                            dosage: dosage,
+                            times: times.split(',').map(t => t.trim()),
+                            duration_days: parseInt(duration),
+                            instructions: instructions
+                        })
+                    });
+
+                    if (response.ok) {
+                        document.getElementById('medicineReminderModal').classList.remove('active');
+                        // Clear form
+                        document.getElementById('medicineName').value = '';
+                        document.getElementById('medicineDosage').value = '';
+                        document.getElementById('medicineTimes').value = '';
+                        document.getElementById('medicineDuration').value = '30';
+                        document.getElementById('medicineInstructions').value = '';
+
+                        // Refresh reminders
+                        await checkMedicineReminders();
+                        showConfirmationModal('Success', 'Medicine reminder added successfully!');
+                    } else {
+                        throw new Error('Failed to save reminder');
+                    }
+                } catch (error) {
+                    console.error('Save reminder error:', error);
+                    alert('Failed to save medicine reminder. Please try again.');
+                }
+            }
+
+            // Enhanced SOS Detection in Chatbot
+            async function checkForEmergency(message) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/v1/enhanced-sos`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: user.patientId,
+                            message: message,
+                            language: currentLanguage
+                        })
+                    });
+
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('SOS detection error:', error);
+                    return { emergency_detected: false };
                 }
             }
 
@@ -3158,7 +3034,34 @@
                 setupUploadPrescription();
                 setupChatbot();
                 setupWebRTC();
-                setupVideoMonitoring();
+
+                // Check for post-appointment follow-up
+                await checkPostAppointmentFollowup();
+            }
+
+            // Post-appointment follow-up check
+            async function checkPostAppointmentFollowup() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/v1/user-progress`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: user.patientId })
+                    });
+
+                    const data = await response.json();
+                    if (data.followup && data.followup.needed) {
+                        // Show follow-up message in chat if chat is active
+                        const chatWindow = document.getElementById('chatWindow');
+                        if (chatWindow && chatWindow.children.length > 0) {
+                            const followupMessage = document.createElement('div');
+                            followupMessage.className = 'chat-message bot-message';
+                            followupMessage.textContent = 'How are you feeling after your appointment?';
+                            chatWindow.appendChild(followupMessage);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Follow-up check error:', error);
+                }
             }
 
             initializeApp();
