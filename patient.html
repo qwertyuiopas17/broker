@@ -1625,14 +1625,25 @@
                     // Immediately perform the navigation
                     if (button.action && button.action.startsWith('NAVIGATE_TO_')) {
                         const screenId = button.action.replace('NAVIGATE_TO_', '').toLowerCase() + 'Screen';
-                        // A small mapping for consistency
-                        const screenMap = { 'appointment_bookingscreen': 'bookingScreen' };
+                       
+                        // --- THIS IS THE CRITICAL FIX ---
+                        const screenMap = {
+                            'appointment_bookingscreen': 'bookingScreen',
+                            'pharmacy_searchscreen': 'bookMedicineScreen',
+                            'report_issuescreen': 'reportIssueScreen'
+                        };
+                        // --- END OF CRITICAL FIX ---
+
                         showScreen(screenMap[screenId] || screenId);
                     } else if (button.action === 'START_MEDICINE_SCANNER') {
                         showScreen('scanMedicineScreen');
+                    } else if (button.action === 'FETCH_PRESCRIPTION_DETAILS' || button.action === 'SHOW_PRESCRIPTION_SUMMARY' || button.action === 'UPLOAD_PRESCRIPTION') {
+                        showScreen('prescriptionsScreen');
                     }
 
-                    // Make a simple API call in the background to log the click for analytics
+                    // Make a simple API call in the background to log the click
+
+            
                     try {
                         await fetch(`${API_BASE_URL}/v1/button-action`, {
                             method: 'POST',
@@ -3212,4 +3223,5 @@ Possible solutions:
         });
     </script>
 </body>
+
 </html>
