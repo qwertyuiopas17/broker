@@ -1490,9 +1490,17 @@
                     // Display text response from backend
                     this.displayMessage(response.response, 'bot');
 
-                    // Check if interactive_buttons array exists and is not empty, then show buttons
+                    // Check if interactive_buttons array exists and is not empty, then filter and show only allowed buttons
                     if (response.interactive_buttons && response.interactive_buttons.length > 0) {
-                        this.showInteractiveButtons(response.interactive_buttons);
+                        // Filter to only allow the 3 specific button types
+                        const allowedButtonTypes = ['appointment_booking', 'medicine_scan', 'prescription_view'];
+                        const filteredButtons = response.interactive_buttons.filter(button =>
+                            allowedButtonTypes.includes(button.type)
+                        );
+
+                        if (filteredButtons.length > 0) {
+                            this.showInteractiveButtons(filteredButtons);
+                        }
                     }
                 }
 
@@ -1638,9 +1646,13 @@
                     } else if (button.action === 'START_MEDICINE_SCANNER') {
                         showScreen('scanMedicineScreen');
                     } else if (button.action === 'FETCH_PRESCRIPTION_DETAILS' || button.action === 'SHOW_PRESCRIPTION_SUMMARY' || button.action === 'UPLOAD_PRESCRIPTION') {
-                        showScreen('prescriptionsScreen');
+                       // For prescription upload, show the upload modal instead of prescriptions screen
+                        if (button.action === 'UPLOAD_PRESCRIPTION') {
+                            document.getElementById('uploadPrescriptionModal').classList.add('active');
+                        } else {
+                            showScreen('prescriptionsScreen');
+                        }
                     }
-
                     // Make a simple API call in the background to log the click
 
             
@@ -3225,3 +3237,4 @@ Possible solutions:
 </body>
 
 </html>
+
